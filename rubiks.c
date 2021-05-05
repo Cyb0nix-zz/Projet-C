@@ -56,17 +56,23 @@ int side_to_index(T_SIDE side){
 }
 
 rubiks* create_rubiks(){
-   rubiks *rubikscube = (rubiks*) malloc(sizeof(rubiks));
-
+    rubiks *rubikscube = (rubiks*) malloc(sizeof(rubiks));
+    rubikscube[0]->Type_face = LEFT;
+    rubikscube[1]->Type_face = UP;
+    rubikscube[2]->Type_face = FRONT;
+    rubikscube[3]->Type_face = DOWN;
+    rubikscube[4]->Type_face = RIGHT;
+    rubikscube[5]->Type_face = BACK;
     return rubikscube;
 }
 
 
 
 void init_rubiks(rubiks* rubikscube){
+    printf(" \n");
     T_COLOR val;
     for (int i = 0; i < 6; ++i) {
-        switch (side_to_index(rubikscube[i]->Type_face)) {
+        switch (rubikscube[i]->Type_face) {
             case LEFT:
                 val = O;
                 break;

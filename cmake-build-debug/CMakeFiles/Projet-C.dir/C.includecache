@@ -6,12 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Data/Projet-C/main.c
-rubiks.h
-C:/Data/Projet-C/rubiks.h
-stdio.h
--
-
 C:/Data/Projet-C/rubiks.c
 stdio.h
 -
