@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Data/Projet-C/main.c
+rubiks.h
+C:/Data/Projet-C/rubiks.h
+stdio.h
+-
+
+C:/Data/Projet-C/rubiks.c
+stdio.h
+-
+rubiks.h
+C:/Data/Projet-C/rubiks.h
+windows.h
+-
+
+C:/Data/Projet-C/rubiks.h
+

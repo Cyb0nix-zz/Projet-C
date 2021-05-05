@@ -1,4 +1,5 @@
 #include "rubiks.h"
+#include <stdio.h>
 
 int main(){
     rubiks* rubikscube = create_rubiks();
