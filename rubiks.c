@@ -2,32 +2,32 @@
 #include "rubiks.h"
 #include <windows.h>
 
-void select_color(T_COLOR color){
+char select_color(T_COLOR color){
     HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
     switch (color) {
         case R:
             SetConsoleTextAttribute(H,12);
-            break;
+            return 'R';
         case B:
             SetConsoleTextAttribute(H,9);
-            break;
+            return 'B';
         case G:
             SetConsoleTextAttribute(H,10);
-            break;
+            return 'G';
         case W:
             SetConsoleTextAttribute(H,15);
-            break;
+            return 'W';
         case Y:
             SetConsoleTextAttribute(H,14);
-            break;
+            return 'Y';
         case O:
             SetConsoleTextAttribute(H,13);
-            break;
+            return 'O';
         case LG:
             SetConsoleTextAttribute(H,7);
-            break;
+            return 'X';
         default:
-            break;
+            return ' ';
 
     }
 
@@ -52,27 +52,6 @@ int side_to_index(T_SIDE side){
             return 5;
         default:
             return 0;
-    }
-}
-
-char color_to_char(T_COLOR color) {
-    switch (color) {
-        case R:
-            return 'R';
-        case B:
-            return 'B';
-        case G:
-            return 'G';
-        case W:
-            return 'W';
-        case Y:
-            return 'Y';
-        case O:
-            return 'O';
-        case LG:
-            return 'X';
-        default:
-            break;
     }
 }
 
@@ -160,8 +139,7 @@ void display_rubiks(rubiks* rubikscube){
     }
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 12; ++j) {
-            select_color(display[i][j]);
-            printf(" %c ",color_to_char(display[i][j]));
+            printf(" %c ",select_color(display[i][j]));
         }
         printf("\n");
     }

@@ -11,7 +11,7 @@ typedef struct {
 
 typedef rubiks_side rubiks[6];
 
-void select_color(T_COLOR color);
+char select_color(T_COLOR color);
 int side_to_index(T_SIDE side);
 char color_to_char(T_COLOR color);
 
