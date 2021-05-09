@@ -107,6 +107,7 @@ void init_rubiks(RUBIKS_SIDE* rubikscube){
 }
 
 void display_rubiks(RUBIKS_SIDE * rubikscube){
+    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
     T_COLOR display[9][12];
     T_SIDE face;
     for (int i = 0; i < 9; ++i) {
@@ -149,17 +150,19 @@ void display_rubiks(RUBIKS_SIDE * rubikscube){
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 12; ++j) {
             printf(" %c ",select_color(display[i][j]));
+            SetConsoleTextAttribute(H,15);
+
         }
         printf("\n");
     }
     printf("\n");
 }
 
-void blank_rubiks(RUBIKS_SIDE* rubiscube){
+void blank_rubiks(RUBIKS_SIDE* rubikscube){
     for (int i = 0; i < 6; ++i) {
         for (int j = 0; j < 3; ++j) {
             for (int k = 0; k < 3; ++k) {
-                rubiscube[i].face[j][k] = LG;
+                rubikscube[i].face[j][k] = LG;
             }
         }
     }
@@ -169,37 +172,429 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
 
 }
 
-void scramble_rubiks(RUBIKS_SIDE* rubiscube){
+void scramble_rubiks(RUBIKS_SIDE* rubikscube){
 
 }
 
-void free_rubiks(RUBIKS_SIDE* rubiscube){
-    free(rubiscube);
+void free_rubiks(RUBIKS_SIDE* rubikscube){
+    free(rubikscube);
 }
 
-void front_clockwise(RUBIKS_SIDE* rubiscube){
+void front_clockwise(RUBIKS_SIDE* rubikscube, int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
-        tmp = rubiscube[side_to_index(LEFT)].face[i][2];
-        rubiscube[side_to_index(LEFT)].face[i][2] = rubiscube[side_to_index(DOWN)].face[0][i];
-        rubiscube[side_to_index(DOWN)].face[0][i]= rubiscube[side_to_index(RIGHT)].face[2-i][0];
-        rubiscube[side_to_index(RIGHT)].face[2-i][0] = rubiscube[side_to_index(UP)].face[2][2-i];
-        rubiscube[side_to_index(UP)].face[2][2-i] = tmp;
+        tmp = rubikscube[side_to_index(LEFT)].face[i][2];
+        rubikscube[side_to_index(LEFT)].face[i][2] = rubikscube[side_to_index(DOWN)].face[0][i];
+        rubikscube[side_to_index(DOWN)].face[0][i]= rubikscube[side_to_index(RIGHT)].face[2-i][0];
+        rubikscube[side_to_index(RIGHT)].face[2-i][0] = rubikscube[side_to_index(UP)].face[2][2-i];
+        rubikscube[side_to_index(UP)].face[2][2-i] = tmp;
     }
-    
+
+    if (type == 2){
+        type = 1;
+        front_clockwise(rubikscube,type);
+    }
 }
 
-void back_clockwise(RUBIKS_SIDE* rubiscube){
+void back_clockwise(RUBIKS_SIDE* rubikscube,int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
-        tmp = rubiscube[side_to_index(LEFT)].face[2-i][0];
-        rubiscube[side_to_index(LEFT)].face[2-i][0] = rubiscube[side_to_index(UP)].face[0][i];
-        rubiscube[side_to_index(UP)].face[0][i]= rubiscube[side_to_index(RIGHT)].face[i][2];
-        rubiscube[side_to_index(RIGHT)].face[i][2] = rubiscube[side_to_index(DOWN)].face[2][2-i];
-        rubiscube[side_to_index(DOWN)].face[2][2-i] = tmp;
+        tmp = rubikscube[side_to_index(LEFT)].face[2-i][0];
+        rubikscube[side_to_index(LEFT)].face[2-i][0] = rubikscube[side_to_index(UP)].face[0][i];
+        rubikscube[side_to_index(UP)].face[0][i]= rubikscube[side_to_index(RIGHT)].face[i][2];
+        rubikscube[side_to_index(RIGHT)].face[i][2] = rubikscube[side_to_index(DOWN)].face[2][2-i];
+        rubikscube[side_to_index(DOWN)].face[2][2-i] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        back_clockwise(rubikscube,type);
     }
 
 }
 
+void right_clockwise(RUBIKS_SIDE* rubikscube,int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(FRONT)].face[i][2];
+        rubikscube[side_to_index(FRONT)].face[i][2] = rubikscube[side_to_index(DOWN)].face[i][2];
+        rubikscube[side_to_index(DOWN)].face[i][2]= rubikscube[side_to_index(BACK)].face[2-i][0];
+        rubikscube[side_to_index(BACK)].face[2-i][0] = rubikscube[side_to_index(UP)].face[i][2];
+        rubikscube[side_to_index(UP)].face[i][2] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        right_clockwise(rubikscube,type);
+    }
+}
+
+void left_clockwise(RUBIKS_SIDE* rubikscube,int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[i][2];
+        rubikscube[side_to_index(BACK)].face[i][2] = rubikscube[side_to_index(DOWN)].face[2-i][0];
+        rubikscube[side_to_index(DOWN)].face[2-i][0]= rubikscube[side_to_index(FRONT)].face[2-i][0];
+        rubikscube[side_to_index(FRONT)].face[2-i][0] = rubikscube[side_to_index(UP)].face[2-i][0];
+        rubikscube[side_to_index(UP)].face[2-i][0] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        left_clockwise(rubikscube,type);
+    }
+}
+
+void up_clockwise(RUBIKS_SIDE* rubikscube, int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[0][i];
+        rubikscube[side_to_index(BACK)].face[0][i] = rubikscube[side_to_index(DOWN)].face[0][i];
+        rubikscube[side_to_index(DOWN)].face[0][i]= rubikscube[side_to_index(FRONT)].face[0][i];
+        rubikscube[side_to_index(FRONT)].face[0][i] = rubikscube[side_to_index(UP)].face[0][i];
+        rubikscube[side_to_index(UP)].face[0][i] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        up_clockwise(rubikscube,type);
+    }
+}
+
+void down_clockwise(RUBIKS_SIDE* rubikscube, int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[2][2-i];
+        rubikscube[side_to_index(BACK)].face[2][2-i] = rubikscube[side_to_index(DOWN)].face[2][2-i];
+        rubikscube[side_to_index(DOWN)].face[2][2-i]= rubikscube[side_to_index(FRONT)].face[2][2-i];
+        rubikscube[side_to_index(FRONT)].face[2][2-i] = rubikscube[side_to_index(UP)].face[2][2-i];
+        rubikscube[side_to_index(UP)].face[2][2-i] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        down_clockwise(rubikscube,type);
+    }
+}
 
 
+void front_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(LEFT)].face[2-i][2];
+        rubikscube[side_to_index(LEFT)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[0][2-i];
+        rubikscube[side_to_index(DOWN)].face[0][2-i]= rubikscube[side_to_index(RIGHT)].face[i][0];
+        rubikscube[side_to_index(RIGHT)].face[i][0] = rubikscube[side_to_index(UP)].face[2][i];
+        rubikscube[side_to_index(UP)].face[2][i] = tmp;
+    }
+
+    if (type == 2){
+        type = 1;
+        front_anticlockwise(rubikscube,type);
+    }
+}
+
+void back_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(LEFT)].face[i][0];
+        rubikscube[side_to_index(LEFT)].face[i][0] = rubikscube[side_to_index(UP)].face[0][2-i];
+        rubikscube[side_to_index(UP)].face[0][2-i]= rubikscube[side_to_index(RIGHT)].face[2-i][2];
+        rubikscube[side_to_index(RIGHT)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[2][i];
+        rubikscube[side_to_index(DOWN)].face[2][i] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        back_anticlockwise(rubikscube,type);
+    }
+
+}
+
+void left_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[2-i][2];
+        rubikscube[side_to_index(BACK)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[i][0];
+        rubikscube[side_to_index(DOWN)].face[i][0]= rubikscube[side_to_index(FRONT)].face[i][0];
+        rubikscube[side_to_index(FRONT)].face[i][0] = rubikscube[side_to_index(UP)].face[i][0];
+        rubikscube[side_to_index(UP)].face[i][0] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        left_anticlockwise(rubikscube,type);
+    }
+}
+
+void right_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(FRONT)].face[2-i][2];
+        rubikscube[side_to_index(FRONT)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[2-i][2];
+        rubikscube[side_to_index(DOWN)].face[2-i][2]= rubikscube[side_to_index(BACK)].face[i][0];
+        rubikscube[side_to_index(BACK)].face[i][0] = rubikscube[side_to_index(UP)].face[2-i][2];
+        rubikscube[side_to_index(UP)].face[2-i][2] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        right_anticlockwise(rubikscube,type);
+    }
+}
+
+void up_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[0][2-i];
+        rubikscube[side_to_index(BACK)].face[0][2-i] = rubikscube[side_to_index(DOWN)].face[0][2-i];
+        rubikscube[side_to_index(DOWN)].face[0][2-i]= rubikscube[side_to_index(FRONT)].face[0][2-i];
+        rubikscube[side_to_index(FRONT)].face[0][2-i] = rubikscube[side_to_index(UP)].face[0][2-i];
+        rubikscube[side_to_index(UP)].face[0][2-i] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        up_anticlockwise(rubikscube,type);
+    }
+}
+
+void down_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[2][i];
+        rubikscube[side_to_index(BACK)].face[2][i] = rubikscube[side_to_index(DOWN)].face[2][i];
+        rubikscube[side_to_index(DOWN)].face[2][i]= rubikscube[side_to_index(FRONT)].face[2][i];
+        rubikscube[side_to_index(FRONT)].face[2][i] = rubikscube[side_to_index(UP)].face[2][i];
+        rubikscube[side_to_index(UP)].face[2][i] = tmp;
+    }
+    if (type == 2){
+        type = 1;
+        down_anticlockwise(rubikscube,type);
+    }
+}
+
+void vertical_rotation(RUBIKS_SIDE* rubikscube){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp = rubikscube[side_to_index(FRONT)].face[i][j];
+            rubikscube[side_to_index(FRONT)].face[i][j] = rubikscube[side_to_index(BACK)].face[i][j];
+            rubikscube[side_to_index(BACK)].face[i][j] = tmp;
+            tmp = rubikscube[side_to_index(UP)].face[i][j];
+            rubikscube[side_to_index(UP)].face[i][j] = rubikscube[side_to_index(DOWN)].face[i][j];
+            rubikscube[side_to_index(DOWN)].face[i][j] = tmp;
+        }
+    }
+}
+
+void horizontal_rotation(RUBIKS_SIDE* rubikscube){
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp = rubikscube[side_to_index(FRONT)].face[i][j];
+            rubikscube[side_to_index(FRONT)].face[i][j] = rubikscube[side_to_index(BACK)].face[i][j];
+            rubikscube[side_to_index(BACK)].face[i][j] = tmp;
+            tmp = rubikscube[side_to_index(LEFT)].face[i][j];
+            rubikscube[side_to_index(LEFT)].face[i][j] = rubikscube[side_to_index(RIGHT)].face[i][j];
+            rubikscube[side_to_index(RIGHT)].face[i][j] = tmp;
+        }
+    }
+}
+
+void move_rubiks(RUBIKS_SIDE* rubikscube){
+    for (int i = 0; i < 80; ++i) {
+        printf("-");
+    }
+    printf("\n");
+    printf("1: Choisir une face     2: rotation horizontal     3: rotation vertical\n");
+    for (int i = 0; i < 80; ++i) {
+        printf("-");
+    }
+    int choix;
+    printf("\nAction: ");
+    scanf("%d",&choix);
+    printf("\n");
+    switch (choix) {
+        case 1:
+            for (int i = 0; i < 80; ++i) {
+                printf("-");
+            }
+            printf("\n");
+            printf("1: Left    2: Front     3: Up    4: Down    5: Right     6: Back\n");
+            for (int i = 0; i < 80; ++i) {
+                printf("-");
+            }
+            printf("\nAction: ");
+            scanf("%d",&choix);
+            printf("\n");
+            switch (choix) {
+                case 1:
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\n");
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\nAction: ");
+                    scanf("%d",&choix);
+                    printf("\n");
+                    switch (choix) {
+                        case 1:
+                            left_clockwise(rubikscube,1);
+                            break;
+                        case 2:
+                            left_anticlockwise(rubikscube,1);
+                            break;
+                        case 3:
+                            left_clockwise(rubikscube,2);
+                            break;
+                        case 4:
+                            left_anticlockwise(rubikscube,2);
+                            break;
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\n");
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\nAction: ");
+                    scanf("%d",&choix);
+                    printf("\n");
+                    switch (choix) {
+                        case 1:
+                            front_clockwise(rubikscube,1);
+                            break;
+                        case 2:
+                            front_anticlockwise(rubikscube,1);
+                            break;
+                        case 3:
+                            front_clockwise(rubikscube,2);
+                            break;
+                        case 4:
+                            front_anticlockwise(rubikscube,2);
+                            break;
+                    }
+                    break;
+
+                case 3:
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\n");
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\nAction: ");
+                    scanf("%d",&choix);
+                    printf("\n");
+                    switch (choix) {
+                        case 1:
+                            up_clockwise(rubikscube,1);
+                            break;
+                        case 2:
+                            up_anticlockwise(rubikscube,1);
+                            break;
+                        case 3:
+                            up_clockwise(rubikscube,2);
+                            break;
+                        case 4:
+                            up_anticlockwise(rubikscube,2);
+                            break;
+                    }
+                    break;
+
+
+                case 4:
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\n");
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\nAction: ");
+                    scanf("%d",&choix);
+                    printf("\n");
+                    switch (choix) {
+                        case 1:
+                            down_clockwise(rubikscube,1);
+                            break;
+                        case 2:
+                            down_anticlockwise(rubikscube,1);
+                            break;
+                        case 3:
+                            down_clockwise(rubikscube,2);
+                            break;
+                        case 4:
+                            down_anticlockwise(rubikscube,2);
+                            break;
+                    }
+                    break;
+
+                case 5:
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\n");
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\nAction: ");
+                    scanf("%d",&choix);
+                    printf("\n");
+                    switch (choix) {
+                        case 1:
+                            right_clockwise(rubikscube,1);
+                            break;
+                        case 2:
+                            right_anticlockwise(rubikscube,1);
+                            break;
+                        case 3:
+                            right_clockwise(rubikscube,2);
+                            break;
+                        case 4:
+                            right_anticlockwise(rubikscube,2);
+                            break;
+                    }
+                    break;
+                case 6:
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\n");
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
+                    for (int i = 0; i < 80; ++i) {
+                        printf("-");
+                    }
+                    printf("\nAction: ");
+                    scanf("%d",&choix);
+                    printf("\n");
+                    switch (choix) {
+                        case 1:
+                            back_clockwise(rubikscube,1);
+                            break;
+                        case 2:
+                            back_anticlockwise(rubikscube,1);
+                            break;
+                        case 3:
+                            back_clockwise(rubikscube,2);
+                            break;
+                        case 4:
+                            back_anticlockwise(rubikscube,2);
+                            break;
+                    }
+                    break;
+            }
+            break;
+        case 2:
+            horizontal_rotation(rubikscube);
+            break;
+        case 3:
+            vertical_rotation(rubikscube);
+            break;
+
+    }
+
+}

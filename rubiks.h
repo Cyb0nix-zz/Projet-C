@@ -22,19 +22,25 @@ void fill_rubiks(RUBIKS_SIDE*);
 void scramble_rubiks(RUBIKS_SIDE*);
 void free_rubiks(RUBIKS_SIDE*);
 
-void front_clockwise(RUBIKS_SIDE* rubiscube);
-void back_clockwise(RUBIKS_SIDE* rubiscube);
-void up_clockwise(RUBIKS_SIDE* rubiscube);
-void down_clockwise(RUBIKS_SIDE* rubiscube);
-void right_clockwise(RUBIKS_SIDE* rubiscube);
-void left_clockwise(RUBIKS_SIDE* rubiscube);
+void front_clockwise(RUBIKS_SIDE* rubiscube,int type);
+void back_clockwise(RUBIKS_SIDE* rubiscube,int type);
+void up_clockwise(RUBIKS_SIDE* rubiscube,int type);
+void down_clockwise(RUBIKS_SIDE* rubiscube,int type);
+void right_clockwise(RUBIKS_SIDE* rubiscube,int type);
+void left_clockwise(RUBIKS_SIDE* rubiscube,int type);
 
-void front_anticlockwise(RUBIKS_SIDE* rubiscube);
-void back_anticlockwise(RUBIKS_SIDE* rubiscube);
-void up_anticlockwise(RUBIKS_SIDE* rubiscube);
-void down_anticlockwise(RUBIKS_SIDE* rubiscube);
-void right_anticlockwise(RUBIKS_SIDE* rubiscube);
-void left_anticlockwise(RUBIKS_SIDE* rubiscube);
+void front_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
+void back_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
+void up_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
+void down_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
+void right_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
+void left_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
+
+void horizontal_rotation(RUBIKS_SIDE* rubiscube);
+void vertical_rotation(RUBIKS_SIDE* rubiscube);
+
+void move_rubiks(RUBIKS_SIDE* rubikscube);
+
 
 
 
