@@ -1,28 +1,41 @@
 #ifndef PROJET_C_RUBIKS_H
 #define PROJET_C_RUBIKS_H
 
-typedef enum { FRONT, BACK, UP, DOWN, RIGHT, LEFT } T_SIDE ;
-typedef enum { R, B, G, W, Y, O, LG } T_COLOR ;
-typedef T_COLOR Face[3][3];
-typedef struct {
-    T_SIDE Type_face;
-    Face Face;
-    } rubiks_side;
 
-typedef rubiks_side rubiks[6];
+typedef enum { R, B, G, W, Y, O, LG } T_COLOR ;
+typedef enum { FRONT, BACK, UP, DOWN, RIGHT, LEFT } T_SIDE ;
+typedef struct {
+    T_SIDE type_face;
+    T_COLOR face[3][3];
+    } RUBIKS_SIDE;
 
 char select_color(T_COLOR color);
 int side_to_index(T_SIDE side);
 char color_to_char(T_COLOR color);
 
-rubiks* create_rubiks();
+RUBIKS_SIDE* create_rubiks();
 
-void init_rubiks(rubiks*);
-void display_rubiks(rubiks*);
-void blank_rubiks(rubiks*);
-void fill_rubiks(rubiks*);
-void scramble_rubiks(rubiks*);
-void free_rubiks(rubiks*);
+void init_rubiks(RUBIKS_SIDE*);
+void display_rubiks(RUBIKS_SIDE*);
+void blank_rubiks(RUBIKS_SIDE*);
+void fill_rubiks(RUBIKS_SIDE*);
+void scramble_rubiks(RUBIKS_SIDE*);
+void free_rubiks(RUBIKS_SIDE*);
+
+void front_clockwise(RUBIKS_SIDE* rubiscube);
+void back_clockwise(RUBIKS_SIDE* rubiscube);
+void up_clockwise(RUBIKS_SIDE* rubiscube);
+void down_clockwise(RUBIKS_SIDE* rubiscube);
+void right_clockwise(RUBIKS_SIDE* rubiscube);
+void left_clockwise(RUBIKS_SIDE* rubiscube);
+
+void front_anticlockwise(RUBIKS_SIDE* rubiscube);
+void back_anticlockwise(RUBIKS_SIDE* rubiscube);
+void up_anticlockwise(RUBIKS_SIDE* rubiscube);
+void down_anticlockwise(RUBIKS_SIDE* rubiscube);
+void right_anticlockwise(RUBIKS_SIDE* rubiscube);
+void left_anticlockwise(RUBIKS_SIDE* rubiscube);
+
 
 
 #endif //PROJET_C_RUBIKS_H
