@@ -6,13 +6,15 @@
 
 #IncludeRegexTransform: 
 
-D:/Projet-C/rubiks.c
+C:/Data/Projet-C/rubiks.c
 stdio.h
 -
 rubiks.h
-D:/Projet-C/rubiks.h
+C:/Data/Projet-C/rubiks.h
 windows.h
 -
+time.h
+-
 
-D:/Projet-C/rubiks.h
+C:/Data/Projet-C/rubiks.h
 

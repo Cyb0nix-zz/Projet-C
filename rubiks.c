@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "rubiks.h"
 #include <windows.h>
+#include <time.h>
 
 char select_color(T_COLOR color){
     HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
     switch (color) {
-
         case R:
             SetConsoleTextAttribute(H,12);
             return 'R';
@@ -29,10 +29,7 @@ char select_color(T_COLOR color){
             return 'X';
         default:
             return ' ';
-
     }
-
-
 }
 
 int side_to_index(T_SIDE side){
@@ -170,10 +167,59 @@ void blank_rubiks(RUBIKS_SIDE* rubikscube){
 
 void fill_rubiks(RUBIKS_SIDE* rubikscube){
 
+    
+
 }
 
 void scramble_rubiks(RUBIKS_SIDE* rubikscube){
+        srand(time(NULL));
+        int loop = rand();
 
+    for (int i = 0; i < loop; ++i) {
+
+        int move = rand();
+        do {
+            move = move/10;
+        }while (move > 11);
+        switch (move) {
+            case 0:
+                front_clockwise(rubikscube,1);
+                break;
+            case 1:
+                front_anticlockwise(rubikscube,1);
+                break;
+            case 2:
+                back_clockwise(rubikscube,1);
+                break;
+            case 3:
+                back_anticlockwise(rubikscube,1);
+                break;
+            case 4:
+                left_clockwise(rubikscube,1);
+                break;
+            case 5:
+                left_anticlockwise(rubikscube,1);
+                break;
+            case 6:
+                right_clockwise(rubikscube,1);
+                break;
+            case 7:
+                right_anticlockwise(rubikscube,1);
+                break;
+            case 8:
+                up_clockwise(rubikscube,1);
+                break;
+            case 9:
+                up_anticlockwise(rubikscube,1);
+                break;
+            case 10:
+                down_clockwise(rubikscube,1);
+                break;
+            case 11:
+                down_anticlockwise(rubikscube,1);
+                break;
+        }
+    }
 }
 
 void free_rubiks(RUBIKS_SIDE* rubikscube){

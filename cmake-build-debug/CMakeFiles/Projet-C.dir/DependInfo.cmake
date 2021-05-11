@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "D:/Projet-C/main.c" "D:/Projet-C/cmake-build-debug/CMakeFiles/Projet-C.dir/main.c.obj"
-  "D:/Projet-C/rubiks.c" "D:/Projet-C/cmake-build-debug/CMakeFiles/Projet-C.dir/rubiks.c.obj"
+  "C:/Data/Projet-C/main.c" "C:/Data/Projet-C/cmake-build-debug/CMakeFiles/Projet-C.dir/main.c.obj"
+  "C:/Data/Projet-C/rubiks.c" "C:/Data/Projet-C/cmake-build-debug/CMakeFiles/Projet-C.dir/rubiks.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

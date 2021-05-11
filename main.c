@@ -6,7 +6,7 @@ int main(){
     rubikscube = create_rubiks();
     init_rubiks(rubikscube);
     display_rubiks(rubikscube);
-    move_rubiks(rubikscube);
+    scramble_rubiks(rubikscube);
     display_rubiks(rubikscube);
     return 0;
 }
