@@ -166,8 +166,52 @@ void blank_rubiks(RUBIKS_SIDE* rubikscube){
 }
 
 void fill_rubiks(RUBIKS_SIDE* rubikscube){
+    int i, j, k;
+    int cptR, cptB, cptG, cptW, cptY, cptO = 0;
+    char val;
 
-    
+    for(int cpt = 0; cpt < 54; ++cpt){
+        printf("Quelle face voulez vous modifier ? :\n");
+        scanf("%d", &i);
+
+        printf("Quelle case voulez vous modifier ? (ligne et colonne entre 0 et 2) :\n");
+        scanf("%d %d", &j, &k);
+
+        printf("quelle couleur? :\n");
+        scanf(" %c", &val);
+
+
+
+        switch (val) {
+            case 'R':
+                rubikscube[i].face[j][k] = R;
+                cptR = cptR + 1;
+                break;
+            case 'B':
+                rubikscube[i].face[j][k] = B;
+                cptB = cptB + 1;
+                break;
+            case 'G':
+                rubikscube[i].face[j][k] = G;
+                cptG = cptG + 1;
+                break;
+            case 'W':
+                rubikscube[i].face[j][k] = W;
+                cptW = cptW + 1;
+                break;
+            case 'Y':
+                rubikscube[i].face[j][k] = Y;
+                cptY = cptY + 1;
+                break;
+            case 'O':
+                rubikscube[i].face[j][k] = O;
+                cptO = cptO + 1;
+                break;
+        }
+        display_rubiks(rubikscube);
+
+    }
+
 
 }
 
