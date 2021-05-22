@@ -56,7 +56,6 @@ int side_to_index(T_SIDE side){
 RUBIKS_SIDE* create_rubiks(){
 
     RUBIKS_SIDE* rubikscube = (RUBIKS_SIDE*) malloc(sizeof(RUBIKS_SIDE)*6);
-
     rubikscube[0].type_face = LEFT;
     rubikscube[1].type_face = UP;
     rubikscube[2].type_face = FRONT;
@@ -167,7 +166,7 @@ void blank_rubiks(RUBIKS_SIDE* rubikscube){
 
 void fill_rubiks(RUBIKS_SIDE* rubikscube){
 
-    
+
 
 }
 
@@ -440,11 +439,12 @@ void horizontal_rotation(RUBIKS_SIDE* rubikscube){
 }
 
 void move_rubiks(RUBIKS_SIDE* rubikscube){
+    int move = 1;
     for (int i = 0; i < 80; ++i) {
         printf("-");
     }
     printf("\n");
-    printf("1: Choisir une face     2: rotation horizontal     3: rotation vertical\n");
+    printf("1: Choisir une face     2: Rotation horizontal     3: Rotation vertical     4 : Exit\n");
     for (int i = 0; i < 80; ++i) {
         printf("-");
     }
@@ -606,12 +606,12 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                     }
                     break;
                 case 6:
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 100; ++i) {
                         printf("-");
                     }
                     printf("\n");
                     printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 100; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -640,7 +640,177 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
         case 3:
             vertical_rotation(rubikscube);
             break;
-
+        case 4:
+            move = 0;
+            break;
     }
+
+}
+
+void solve_rubiks(RUBIKS_SIDE* rubikscube){
+    make_cross(rubikscube);
+
+}
+
+void corner(RUBIKS_SIDE* rubikscube){
+    
+}
+
+void make_cross(RUBIKS_SIDE* rubikscube){
+   int cross = 1;
+    if (rubikscube[side_to_index(UP)].face[0][1] != W && rubikscube[side_to_index(UP)].face[2][1] != W){
+        cross = 0;
+    }else{
+        cross = 1;
+    }
+    for (int i = 0; i < 3; ++i) {
+        if(rubikscube[side_to_index(UP)].face[1][i] != W){
+            cross = 0;
+        }else{
+            cross = 1;
+        }
+    }
+   while(cross == 0){
+       display_rubiks(rubikscube);
+       if (rubikscube[side_to_index(UP)].face[0][1] != W && rubikscube[side_to_index(UP)].face[2][1] != W){
+           cross = 0;
+       }else{
+           cross = 1;
+       }
+       for (int i = 0; i < 3; ++i) {
+           if(rubikscube[side_to_index(UP)].face[1][i] != W){
+               cross = 0;
+           }else{
+               cross = 1;
+           }
+       }
+       if(cross == 0){
+           if(rubikscube[side_to_index(UP)].face[0][1] == W && rubikscube[side_to_index(UP)].face[1][0] == W
+              && rubikscube[side_to_index(UP)].face[1][1] == W && rubikscube[side_to_index(UP)].face[1][2] == W
+              && rubikscube[side_to_index(UP)].face[2][1] == G && rubikscube[side_to_index(FRONT)].face[0][1] == W
+              && rubikscube[side_to_index(LEFT)].face[0][1] == R && rubikscube[side_to_index(UP)].face[1][1] == R){
+               front_clockwise(rubikscube,1);
+               up_anticlockwise(rubikscube,1);
+               right_clockwise(rubikscube,1);
+               up_clockwise(rubikscube,1);
+           }else if (rubikscube[side_to_index(UP)].face[0][1] == W && rubikscube[side_to_index(UP)].face[1][0] == W
+                     && rubikscube[side_to_index(UP)].face[1][1] == W && rubikscube[side_to_index(UP)].face[1][2] == W
+                     && rubikscube[side_to_index(LEFT)].face[0][1] == R && rubikscube[side_to_index(UP)].face[1][1] == R
+                     && rubikscube[side_to_index(FRONT)].face[2][1] == W){
+               front_anticlockwise(rubikscube,1);
+               right_anticlockwise(rubikscube,1);
+               down_anticlockwise(rubikscube,1);
+               right_clockwise(rubikscube,1);
+               front_anticlockwise(rubikscube,2);
+           }else if(rubikscube[side_to_index(UP)].face[0][1] == W && rubikscube[side_to_index(UP)].face[1][0] == W
+                    && rubikscube[side_to_index(UP)].face[1][1] == W && rubikscube[side_to_index(UP)].face[1][2] == W
+                    && rubikscube[side_to_index(LEFT)].face[0][1] == R && rubikscube[side_to_index(UP)].face[1][1] == R
+                    && rubikscube[side_to_index(FRONT)].face[1][2] == W){
+               right_anticlockwise(rubikscube,1);
+               down_anticlockwise(rubikscube,1);
+               right_clockwise(rubikscube,1);
+               front_anticlockwise(rubikscube,2);
+           }else if(rubikscube[side_to_index(UP)].face[2][1] == R && rubikscube[side_to_index(FRONT)].face[0][1] == W){
+               front_clockwise(rubikscube,1);
+               right_clockwise(rubikscube,1);
+           }else if(rubikscube[side_to_index(UP)].face[1][2] == O && rubikscube[side_to_index(RIGHT)].face[0][1] == W){
+               right_anticlockwise(rubikscube,1);
+               front_anticlockwise(rubikscube,1);
+               up_clockwise(rubikscube,1);
+           }else{
+               srand(time(NULL));
+               int move = rand();
+               do {
+                   move = move/10;
+               }while (move > 11);
+               switch (move) {
+                   case 0:
+                       front_clockwise(rubikscube,1);
+                       break;
+                   case 1:
+                       front_anticlockwise(rubikscube,1);
+                       break;
+                   case 2:
+                       back_clockwise(rubikscube,1);
+                       break;
+                   case 3:
+                       back_anticlockwise(rubikscube,1);
+                       break;
+                   case 4:
+                       left_clockwise(rubikscube,1);
+                       break;
+                   case 5:
+                       left_anticlockwise(rubikscube,1);
+                       break;
+                   case 6:
+                       right_clockwise(rubikscube,1);
+                       break;
+                   case 7:
+                       right_anticlockwise(rubikscube,1);
+                       break;
+                   case 8:
+                       up_clockwise(rubikscube,1);
+                       break;
+                   case 9:
+                       up_anticlockwise(rubikscube,1);
+                       break;
+                   case 10:
+                       down_clockwise(rubikscube,1);
+                       break;
+                   case 11:
+                       down_anticlockwise(rubikscube,1);
+                       break;
+               }
+           }
+       }
+   }
+
+}
+
+void menu(RUBIKS_SIDE* rubikscube){
+    int menu = 1;
+    while (menu){
+        for (int i = 0; i < 90; ++i) {
+            printf("-");
+        }
+        printf("\n");
+        printf("1: Scramble     2: Reset     3: Blank    4 : Play    5 : Fill    6 : Solve    7 : Exit\n");
+        for (int i = 0; i < 90; ++i) {
+            printf("-");
+        }
+        int choix;
+        printf("\nAction: ");
+        scanf("%d",&choix);
+        printf("\n");
+        switch (choix) {
+            case 1:
+                scramble_rubiks(rubikscube);
+                display_rubiks(rubikscube);
+                break;
+            case 2:
+                free_rubiks(rubikscube);
+                rubikscube = create_rubiks();
+                break;
+            case 3:
+                blank_rubiks(rubikscube);
+                display_rubiks(rubikscube);
+                break;
+            case 4:
+                move_rubiks(rubikscube);
+                display_rubiks(rubikscube);
+                break;
+            case 5:
+                fill_rubiks(rubikscube);
+                break;
+            case 6:
+                solve_rubiks(rubikscube);
+                display_rubiks(rubikscube);
+                break;
+            case 7 :
+                menu = 0;
+                break;
+        }
+    }
+
 
 }

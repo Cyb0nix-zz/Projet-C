@@ -41,7 +41,11 @@ void vertical_rotation(RUBIKS_SIDE* rubiscube);
 
 void move_rubiks(RUBIKS_SIDE* rubikscube);
 
+void solve_rubiks(RUBIKS_SIDE* rubikscube);
+void make_cross(RUBIKS_SIDE* rubikscube);
+void corner(RUBIKS_SIDE* rubikscube);
 
+void menu();
 
 
 #endif //PROJET_C_RUBIKS_H
