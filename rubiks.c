@@ -887,12 +887,12 @@ void horizontal_rotation(RUBIKS_SIDE* rubikscube){
 
 void move_rubiks(RUBIKS_SIDE* rubikscube){
     int move = 1;
-    for (int i = 0; i < 80; ++i) {
+    for (int i = 0; i < 84; ++i) {
         printf("-");
     }
     printf("\n");
     printf("1: Choisir une face     2: Rotation horizontal     3: Rotation vertical     4 : Exit\n");
-    for (int i = 0; i < 80; ++i) {
+    for (int i = 0; i < 84; ++i) {
         printf("-");
     }
     int choix;
@@ -901,12 +901,12 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
     printf("\n");
     switch (choix) {
         case 1:
-            for (int i = 0; i < 80; ++i) {
+            for (int i = 0; i < 76; ++i) {
                 printf("-");
             }
             printf("\n");
-            printf("1: Left    2: Front     3: Up    4: Down    5: Right     6: Back\n");
-            for (int i = 0; i < 80; ++i) {
+            printf("1: Left    2: Front     3: Up    4: Down    5: Right     6: Back     7: Exit\n");
+            for (int i = 0; i < 76; ++i) {
                 printf("-");
             }
             printf("\nAction: ");
@@ -914,12 +914,12 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
             printf("\n");
             switch (choix) {
                 case 1:
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\n");
-                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 80; ++i) {
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise    5: Exit\n");
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -938,15 +938,18 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                         case 4:
                             left_anticlockwise(rubikscube,2);
                             break;
+                        case 5:
+                            move = 0;
+                            break;
                     }
                     break;
                 case 2:
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\n");
-                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 80; ++i) {
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise    5: Exit\n");
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -965,16 +968,19 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                         case 4:
                             front_anticlockwise(rubikscube,2);
                             break;
+                        case 5:
+                            move = 0;
+                            break;
                     }
                     break;
 
                 case 3:
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\n");
-                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 80; ++i) {
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise    5: Exit\n");
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -993,17 +999,20 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                         case 4:
                             up_anticlockwise(rubikscube,2);
                             break;
+                        case 5:
+                            move = 0;
+                            break;
                     }
                     break;
 
 
                 case 4:
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\n");
-                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 80; ++i) {
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise    5: Exit\n");
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -1022,16 +1031,19 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                         case 4:
                             down_anticlockwise(rubikscube,2);
                             break;
+                        case 5:
+                            move = 0;
+                            break;
                     }
                     break;
 
                 case 5:
-                    for (int i = 0; i < 80; ++i) {
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\n");
-                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 80; ++i) {
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise    5: Exit\n");
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -1050,15 +1062,18 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                         case 4:
                             right_anticlockwise(rubikscube,2);
                             break;
+                        case 5:
+                            move = 0;
+                            break;
                     }
                     break;
                 case 6:
-                    for (int i = 0; i < 100; ++i) {
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\n");
-                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise\n");
-                    for (int i = 0; i < 100; ++i) {
+                    printf("1: quart clockwise    2: quart anticlockwise    3: demi clockwise    4: demi anticlockwise    5: Exit\n");
+                    for (int i = 0; i < 101; ++i) {
                         printf("-");
                     }
                     printf("\nAction: ");
@@ -1076,6 +1091,9 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
                             break;
                         case 4:
                             back_anticlockwise(rubikscube,2);
+                            break;
+                        case 5:
+                            move = 0;
                             break;
                     }
                     break;
@@ -1217,12 +1235,12 @@ void make_cross(RUBIKS_SIDE* rubikscube){
 void menu(RUBIKS_SIDE* rubikscube){
     int menu = 1;
     while (menu){
-        for (int i = 0; i < 90; ++i) {
+        for (int i = 0; i < 86; ++i) {
             printf("-");
         }
         printf("\n");
         printf("1: Scramble     2: Reset     3: Blank    4 : Play    5 : Fill    6 : Solve    7 : Exit\n");
-        for (int i = 0; i < 90; ++i) {
+        for (int i = 0; i < 86; ++i) {
             printf("-");
         }
         int choix;
