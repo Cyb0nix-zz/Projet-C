@@ -322,7 +322,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                     if ((row == 1)&&(col == 1)) {
                             //Et si le compteur >= 1, ne place pas la couleur
                             if (cpt_centre_r >= 1){
-                                printf("Vous ne pouvez placer cette couleur ici");
+                                printf("Vous ne pouvez placer cette couleur ici2");
                                 break;
                             }
                             else {
@@ -331,6 +331,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                 //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                 cpt_centre_r += 1;
                                 cpt_r += 1;
+                                break;
                             }
                     }
                 }
@@ -369,6 +370,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_b += 1;
                         cpt_b += 1;
+                        break;
+
                     }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
@@ -415,6 +418,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                             cpt_centre_b += 1;
                             cpt_b += 1;
+                            break;
                         }
                     }
                 }
@@ -426,11 +430,6 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                 }
                 //sors du switch
                 break;
-            //
-            //
-            // Meme commentaires pour le reste des case
-            //
-            //
             case 3:
                 //Si le compteur du nombre de face de cette couleur arrive a 9, la couleur ne sera pas appliquer
                 if (cpt_g >= 9){
@@ -457,6 +456,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_g += 1;
                         cpt_g += 1;
+                        break;
+
                     }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
@@ -503,6 +504,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                             cpt_centre_g += 1;
                             cpt_g += 1;
+                            break;
+
                         }
                     }
                 }
@@ -540,6 +543,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_w += 1;
                         cpt_w += 1;
+                        break;
+
                     }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
@@ -586,6 +591,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                             cpt_centre_w += 1;
                             cpt_w += 1;
+                            break;
+
                         }
                     }
                 }
@@ -623,6 +630,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_y += 1;
                         cpt_y += 1;
+                        break;
+
                     }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
@@ -669,6 +678,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                             cpt_centre_y += 1;
                             cpt_y += 1;
+                            break;
+
                         }
                     }
                 }
@@ -706,6 +717,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_o += 1;
                         cpt_o += 1;
+                        break;
+
                     }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
@@ -752,6 +765,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                             cpt_centre_o += 1;
                             cpt_o += 1;
+                            break;
+
                         }
                     }
                 }
