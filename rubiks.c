@@ -176,7 +176,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
     int face, row, col;
     int cpt_r = 0, cpt_b = 0, cpt_g = 0, cpt_w = 0, cpt_y = 0, cpt_o = 0;
     int cpt_centre_r = 0, cpt_centre_b = 0, cpt_centre_g = 0, cpt_centre_w = 0, cpt_centre_y = 0, cpt_centre_o = 0;
-    int cpt_angle_r = 0, cpt_angle_b = 0, cpt_angle_g = 0, cpt_anlge_w = 0, cpt_angle_y = 0, cpt_angle_o = 0;
+    int cpt_angle_r = 0, cpt_angle_b = 0, cpt_angle_g = 0, cpt_angle_w = 0, cpt_angle_y = 0, cpt_angle_o = 0;
     int cpt_pole_r = 0, cpt_pole_b = 0, cpt_pole_g = 0, cpt_pole_w = 0, cpt_pole_y = 0, cpt_pole_o = 0;
     int val;
 
@@ -195,14 +195,14 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
         }
         printf("\n");
         //Demande de choisir la face a modifier
-        printf("1: Left    2: Front     3: Up    4: Down    5: Right     6: Back     7: Exit\n");
+        printf("0: Left    1: Front     2: Up    3: Down    4: Right     5: Back     6: Exit\n");
         for (int i = 0; i < 76; ++i) {
             printf("-");
         }
         printf("\nAction: ");
         scanf("%d",&face);
         //Si l'utilisateur choisi de sortir il revient au menu
-        if (face == 7){
+        if (face == 6){
                 display_rubiks(rubikscube);
                 move = 0;
                 break;
@@ -222,14 +222,14 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
         }
         printf("\n");
         //Demande de choisir la ligne a modifier sur la face choisi
-        printf("1: Ligne 1    2: Ligne 2     3: Ligne 3     4: Exit\n");
+        printf("0: Ligne 1    1: Ligne 2     2: Ligne 3     3: Exit\n");
         for (int i = 0; i < 51; ++i) {
             printf("-");
         }
         printf("\nAction: ");
         scanf("%d",&row);
         //Si l'utilisateur choisi de sortir il revient au menu
-        if (row == 4){
+        if (row == 3){
             display_rubiks(rubikscube);
             move = 0;
             break;
@@ -240,14 +240,14 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
         }
         printf("\n");
         //Demande la colonne a modifier sur la face et la ligne choisi
-        printf("1: Colonne 1    2: Colonne 2     3: Colonne 3     4: Exit\n");
+        printf("0: Colonne 1    1: Colonne 2     2: Colonne 3     3: Exit\n");
         for (int i = 0; i < 57; ++i) {
             printf("-");
         }
         printf("\nAction: ");
         scanf("%d",&col);
         //Si l'utilisateur choisi de sortir il revient au menu
-        if (col == 4){
+        if (col == 3){
             display_rubiks(rubikscube);
             move = 0;
             break;
@@ -296,17 +296,18 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             break;
                         }
                     }
-                    //Applique la couleur au coordonner choisi
-                    rubikscube[face].face[row][col] = R;
                     //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                     if (cpt_pole_r >= 4) {
                         printf("Il ne peut y avoir cette couleur sur les poles que 4 fois !\n");
-                        rubikscube[face].face[row][col] = LG;
                         break;
                     }
-                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
-                    cpt_pole_r = cpt_pole_r + 1;
-                    cpt_r = cpt_r + 1;
+                    else {
+                        //Applique la couleur au coordonner choisi
+                        rubikscube[face].face[row][col] = R;
+                        //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                        cpt_pole_r += 1;
+                        cpt_r += 1;
+                    }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
                 for (int l=0; l<6; ++l) {
@@ -319,17 +320,20 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     printf("Tu as deja place cette couleur a cette case !\n");
                                     break;
                                 }
-                                //Applique la couleur au coordonner choisi
-                                rubikscube[face].face[row][col] = R;
                                 //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                                 if (cpt_angle_r >= 4){
                                     printf("Il ne peut y avoir cette couleur sur les cotes que 4 fois !\n");
-                                    rubikscube[face].face[row][col] = LG;
                                     break;
                                 }
-                                //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
-                                cpt_angle_r = cpt_angle_r + 1;
-                                cpt_r = cpt_r + 1;
+                                else{
+                                    //Applique la couleur au coordonner choisi
+                                    rubikscube[face].face[row][col] = R;
+                                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                    cpt_angle_r += 1;
+                                    cpt_r += 1;
+                                    break;
+                                }
+
                             }
                         }
                     }
@@ -337,27 +341,19 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                 //Pour chaque face
                 for (int l=0; l<6; ++l){
                     //Si la ligne et la colonne valent toutes les deux 1 (donc que c'est au centre d'une face)
-                    if ((row == 1) && (col == 1)) {
-                        //Et si une face a deja cette couleur en son centre
-                        if ((rubikscube[l].face[1][1] == R)) {
-                            //Et si le compteur >= 1
-                            if (cpt_centre_r >= 1) {
-                                //Et si la face choisi est la meme que la face avec cette couleur deja appliquer alors affiche le message d'alerte
-                                if (l == face) {
-                                    printf("Tu as deja place cette couleur a cette case !\n");
-                                    break;
-                                }
-                                //Sinon affiche ce message et supprime la couleur de la case choisi
-                                printf("Il ne peut y avoir qu'une fois cette couleur au centre des faces !\n");
-                                rubikscube[face].face[row][col] = LG;
+                    if ((row == 1)&&(col == 1)) {
+                            //Et si le compteur >= 1, ne place pas la couleur
+                            if (cpt_centre_r >= 1){
+                                printf("Vous ne pouvez placer cette couleur ici");
                                 break;
                             }
-                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
-                            cpt_centre_r = cpt_centre_r + 1;
-                            cpt_r = cpt_r + 1;
-                        }
-                        //Applique la couleur au coordonner choisi
-                        rubikscube[face].face[row][col] = R;
+                            else {
+                                //affiche la couleur a la case correspondante
+                                rubikscube[face].face[row][col] = R;
+                                //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                cpt_centre_r += 1;
+                                cpt_r += 1;
+                            }
                     }
                 }
                 //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
@@ -384,17 +380,18 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             break;
                         }
                     }
-                    //Applique la couleur au coordonner choisi
-                    rubikscube[face].face[row][col] = B;
                     //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                     if (cpt_pole_b >= 4) {
                         printf("Il ne peut y avoir cette couleur sur les poles que 4 fois !\n");
-                        rubikscube[face].face[row][col] = LG;
                         break;
                     }
-                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
-                    cpt_pole_b = cpt_pole_b + 1;
-                    cpt_b = cpt_b + 1;
+                    else {
+                        //Applique la couleur au coordonner choisi
+                        rubikscube[face].face[row][col] = B;
+                        //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                        cpt_pole_b += 1;
+                        cpt_b += 1;
+                    }
                 }
                 //Pour les cases ce trouvant sur les cotes de chaque face
                 for (int l=0; l<6; ++l) {
@@ -407,17 +404,20 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     printf("Tu as deja place cette couleur a cette case !\n");
                                     break;
                                 }
-                                //Applique la couleur au coordonner choisi
-                                rubikscube[face].face[row][col] = B;
                                 //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                                 if (cpt_angle_b >= 4){
                                     printf("Il ne peut y avoir cette couleur sur les cotes que 4 fois !\n");
-                                    rubikscube[face].face[row][col] = LG;
                                     break;
                                 }
-                                //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
-                                cpt_angle_b = cpt_angle_b + 1;
-                                cpt_b = cpt_b + 1;
+                                else{
+                                    //Applique la couleur au coordonner choisi
+                                    rubikscube[face].face[row][col] = B;
+                                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                    cpt_angle_b += 1;
+                                    cpt_b += 1;
+                                    break;
+                                }
+
                             }
                         }
                     }
@@ -425,28 +425,22 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                 //Pour chaque face
                 for (int l=0; l<6; ++l){
                     //Si la ligne et la colonne valent toutes les deux 1 (donc que c'est au centre d'une face)
-                    if ((row == 1) && (col == 1)) {
-                        //Et si la face choisi est la meme que la face avec cette couleur deja ap-pliquer alors affiche le message d'alerte
-                        if ((rubikscube[l].face[1][1] == B)) {
-                            if (cpt_centre_b >= 1) {
-                                if (l == face) {
-                                    printf("Tu as deja place cette couleur a cette case !\n");
-                                    break;
-                                }
-                                //Sinon affiche ce message et supprime la couleur de la case choisi
-                                printf("Il ne peut y avoir qu'une fois cette couleur au centre des faces !\n");
-                                rubikscube[face].face[row][col] = LG;
-                                break;
-                            }
-                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
-                            cpt_centre_b = cpt_centre_b + 1;
-                            cpt_b = cpt_b + 1;
+                    if ((row == 1)&&(col == 1)) {
+                        //Et si le compteur >= 1, ne place pas la couleur
+                        if (cpt_centre_b >= 1){
+                            printf("Vous ne pouvez placer cette couleur ici");
+                            break;
                         }
-                        //Applique la couleur au coordonner choisi
-                        rubikscube[face].face[row][col] = B;
+                        else {
+                            //affiche la couleur a la case correspondante
+                            rubikscube[face].face[row][col] = B;
+                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                            cpt_centre_b += 1;
+                            cpt_b += 1;
+                        }
                     }
                 }
-                //Si la case choisi a une case adjacente sur une autre face de la meme cou-leur alors, supprime la couleur de la case choisi et affiche le message d'alerte
+                //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
                 if (((rubikscube[0].face[0][0] == B)&&(rubikscube[1].face[0][0] == B))||((rubikscube[0].face[0][1] == B)&&(rubikscube[1].face[1][0] == B))||((rubikscube[0].face[0][2] == B)&&(rubikscube[1].face[2][0] == B))||((rubikscube[5].face[0][2] == B)&&(rubikscube[1].face[0][0] == B))||((rubikscube[5].face[0][1] == B)&&(rubikscube[1].face[0][1] == B))||((rubikscube[5].face[0][0] == B)&&(rubikscube[1].face[0][2] == B))||((rubikscube[4].face[0][0] == B)&&(rubikscube[1].face[2][2] == B))||((rubikscube[4].face[0][1] == B)&&(rubikscube[1].face[1][2] == B))||((rubikscube[4].face[0][2] == B)&&(rubikscube[1].face[0][2] == B))||((rubikscube[2].face[0][0] == B)&&(rubikscube[1].face[2][0] == B))||((rubikscube[2].face[0][1] == B)&&(rubikscube[1].face[2][1] == B))||((rubikscube[2].face[0][2] == B)&&(rubikscube[1].face[2][2] == B))||((rubikscube[2].face[0][0] == B)&&(rubikscube[0].face[0][2] == B))||((rubikscube[2].face[1][0] == B)&&(rubikscube[0].face[1][2] == B))||((rubikscube[2].face[2][0] == B)&&(rubikscube[0].face[2][2] == B))||((rubikscube[2].face[2][0] == B)&&(rubikscube[3].face[0][0] == B))||((rubikscube[2].face[2][1] == B)&&(rubikscube[3].face[0][1] == B))||((rubikscube[2].face[2][2] == B)&&(rubikscube[3].face[0][2] == B))||((rubikscube[2].face[0][2] == B)&&(rubikscube[4].face[0][0] == B))||((rubikscube[2].face[1][2] == B)&&(rubikscube[4].face[1][0] == B))||((rubikscube[2].face[2][2] == B)&&(rubikscube[4].face[2][0] == B))||((rubikscube[3].face[0][0] == B)&&(rubikscube[0].face[2][2] == B))||((rubikscube[3].face[1][0] == B)&&(rubikscube[0].face[2][1] == B))||((rubikscube[3].face[2][0] == B)&&(rubikscube[0].face[2][0] == B))||((rubikscube[3].face[0][2] == B)&&(rubikscube[4].face[2][0] == B))||((rubikscube[3].face[1][2] == B)&&(rubikscube[4].face[1][0] == B))||((rubikscube[3].face[2][2] == B)&&(rubikscube[4].face[2][0] == B))||((rubikscube[3].face[2][0] == B)&&(rubikscube[5].face[2][2] == B))||((rubikscube[3].face[2][1] == B)&&(rubikscube[5].face[2][1] == B))||((rubikscube[3].face[2][2] == B)&&(rubikscube[5].face[2][0] == B))||((rubikscube[5].face[0][0] == B)&&(rubikscube[4].face[0][2] == B))||((rubikscube[5].face[1][0] == B)&&(rubikscube[4].face[1][2] == B))||((rubikscube[5].face[2][0] == B)&&(rubikscube[4].face[2][2] == B))||((rubikscube[5].face[0][2] == B)&&(rubikscube[0].face[0][0] == B))||((rubikscube[5].face[1][2] == B)&&(rubikscube[0].face[1][0] == B))||((rubikscube[5].face[2][2] == B)&&(rubikscube[0].face[2][0] == B))){
                     rubikscube[face].face[row][col] = LG;
                     printf("Deux cases adjacentes ne doivent pas avoir la meme couleur !\n");
@@ -460,272 +454,336 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
             //
             //
             case 3:
+                //Si le compteur du nombre de face de cette couleur arrive a 9, la couleur ne sera pas appliquer
                 if (cpt_g >= 9){
                     printf("Vous ne pouvez pas placer plus de 9 fois cette couleur !\n");
                     break;
                 }
+                //Si la case choisi ce trouve au pole d'une des faces (cad les cases du centre de chaque arrete) alors ...
                 if (((0 == face) && (0 == row) && (1 == col)) || ((0 == face) && (1 == row) && (0 == col)) || ((0 == face) && (1 == row) && (2 == col)) || ((0 == face) && (2 == row) && (1 == col)) || ((1 == face) && (0 == row) && (1 == col)) || ((1 == face) && (1 == row) && (0 == col)) || ((1 == face) && (1 == row) && (2 == col)) || ((1 == face) && (2 == row) && (1 == col)) || ((2 == face) && (0 == row) && (1 == col)) || ((2 == face) && (1 == row) && (0 == col)) || ((2 == face) && (1 == row) && (2 == col)) || ((2 == face) && (2 == row) && (1 == col)) || ((3 == face) && (0 == row) && (1 == col)) || ((3 == face) && (1 == row) && (0 == col)) || ((3 == face) && (1 == row) && (2 == col)) || ((3 == face) && (2 == row) && (1 == col)) || ((4 == face) && (0 == row) && (1 == col)) || ((4 == face) && (1 == row) && (0 == col)) || ((4 == face) && (1 == row) && (2 == col)) || ((4 == face) && (2 == row) && (1 == col)) || ((5 == face) && (0 == row) && (1 == col)) || ((5 == face) && (1 == row) && (0 == col)) || ((5 == face) && (1 == row) && (2 == col)) || ((5 == face) && (2 == row) && (1 == col))){
+                    //Si le compteur du pole est entre 1 et 3 et que la case choisi est deja de la couleur choisi alors un message indique que la couleur est deja presente et quitte le switch
                     if (cpt_pole_g >= 1 && cpt_pole_g < 4){
                         if (rubikscube[face].face[row][col] == G){
                             printf("Tu as deja place cette couleur a cette case !\n");
                             break;
                         }
                     }
-                    rubikscube[face].face[row][col] = G;
+                    //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                     if (cpt_pole_g >= 4) {
                         printf("Il ne peut y avoir cette couleur sur les poles que 4 fois !\n");
-                        rubikscube[face].face[row][col] = LG;
                         break;
                     }
-                    cpt_pole_g = cpt_pole_g + 1;
-                    cpt_g = cpt_g + 1;
+                    else {
+                        //Applique la couleur au coordonner choisi
+                        rubikscube[face].face[row][col] = G;
+                        //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                        cpt_pole_g += 1;
+                        cpt_g += 1;
+                    }
                 }
-
+                //Pour les cases ce trouvant sur les cotes de chaque face
                 for (int l=0; l<6; ++l) {
                     for (int m = 0; m < 3; m += 2) {
                         for (int n = 0; n < 3; n += 2) {
+                            //Si la case choisi ce trouve sur un coté d'une face
                             if ((l == face) && (m == row) && (col == n)){
+                                //Et si le cpt est entre 1 et 3 et que la case choisi est deja de cette couleur alors affiche le message et sors du switch
                                 if ((cpt_angle_g >= 1 && cpt_angle_g < 4) && (rubikscube[l].face[m][n] == G)){
                                     printf("Tu as deja place cette couleur a cette case !\n");
                                     break;
                                 }
-                                rubikscube[face].face[row][col] = G;
+                                //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                                 if (cpt_angle_g >= 4){
                                     printf("Il ne peut y avoir cette couleur sur les cotes que 4 fois !\n");
-                                    rubikscube[face].face[row][col] = LG;
                                     break;
                                 }
-                                cpt_angle_b = cpt_angle_b + 1;
-                                cpt_b = cpt_b + 1;
-                            }
-                        }
-                    }
-                }
+                                else{
+                                    //Applique la couleur au coordonner choisi
+                                    rubikscube[face].face[row][col] = G;
+                                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                    cpt_angle_g += 1;
+                                    cpt_g += 1;
+                                    break;
+                                }
 
-                for (int l=0; l<6; ++l){
-                    if ((row == 1) && (col == 1)) {
-                        if ((rubikscube[l].face[1][1] == G)) {
-                            if (cpt_centre_g >= 1) {
-                                if (l == face) {
-                                    printf("Tu as deja place cette couleur a cette case !\n");
-                                    break;
-                                }
-                                printf("Il ne peut y avoir qu'une fois cette couleur au centre des faces !\n");
-                                rubikscube[face].face[row][col] = LG;
-                                break;
                             }
-                            cpt_centre_g = cpt_centre_g + 1;
-                            cpt_g = cpt_g + 1;
                         }
-                        rubikscube[face].face[row][col] = G;
                     }
                 }
-                if (((rubikscube[0].face[0][0] == G)&&(rubikscube[1].face[0][0] == G))||((rubikscube[0].face[0][1] == G)&&(rubikscube[1].face[1][0] == G))||((rubikscube[0].face[0][2] == G)&&(rubikscube[1].face[2][0] == G))||((rubikscube[5].face[0][2] == G)&&(rubikscube[1].face[0][0] == G))||((rubikscube[5].face[0][1] == G)&&(rubikscube[1].face[0][1] == G))||((rubikscube[5].face[0][0] == G)&&(rubikscube[1].face[0][2] == G))||((rubikscube[4].face[0][0] == G)&&(rubikscube[1].face[2][2] == G))||((rubikscube[4].face[0][1] == G)&&(rubikscube[1].face[1][2] == G))||((rubikscube[4].face[0][2] == G)&&(rubikscube[1].face[0][2] == G))||((rubikscube[2].face[0][0] == G)&&(rubikscube[1].face[2][0] == G))||((rubikscube[2].face[0][1] == G)&&(rubikscube[1].face[2][1] == G))||((rubikscube[2].face[0][2] == G)&&(rubikscube[1].face[2][2] == G))||((rubikscube[2].face[0][0] == G)&&(rubikscube[0].face[0][2] == G))||((rubikscube[2].face[1][0] == G)&&(rubikscube[0].face[1][2] == G))||((rubikscube[2].face[2][0] == G)&&(rubikscube[0].face[2][2] == G))||((rubikscube[2].face[2][0] == G)&&(rubikscube[3].face[0][0] == G))||((rubikscube[2].face[2][1] == G)&&(rubikscube[3].face[0][1] == G))||((rubikscube[2].face[2][2] == G)&&(rubikscube[3].face[0][2] == G))||((rubikscube[2].face[0][2] == G)&&(rubikscube[4].face[0][0] == G))||((rubikscube[2].face[1][2] == G)&&(rubikscube[4].face[1][0] == G))||((rubikscube[2].face[2][2] == G)&&(rubikscube[4].face[2][0] == G))||((rubikscube[3].face[0][0] == G)&&(rubikscube[0].face[2][2] == G))||((rubikscube[3].face[1][0] == G)&&(rubikscube[0].face[2][1] == G))||((rubikscube[3].face[2][0] == G)&&(rubikscube[0].face[2][0] == G))||((rubikscube[3].face[0][2] == G)&&(rubikscube[4].face[2][0] == G))||((rubikscube[3].face[1][2] == G)&&(rubikscube[4].face[1][0] == G))||((rubikscube[3].face[2][2] == G)&&(rubikscube[4].face[2][0] == G))||((rubikscube[3].face[2][0] == G)&&(rubikscube[5].face[2][2] == G))||((rubikscube[3].face[2][1] == G)&&(rubikscube[5].face[2][1] == G))||((rubikscube[3].face[2][2] == G)&&(rubikscube[5].face[2][0] == G))||((rubikscube[5].face[0][0] == G)&&(rubikscube[4].face[0][2] == G))||((rubikscube[5].face[1][0] == G)&&(rubikscube[4].face[1][2] == G))||((rubikscube[5].face[2][0] == G)&&(rubikscube[4].face[2][2] == G))||((rubikscube[5].face[0][2] == G)&&(rubikscube[0].face[0][0] == G))||((rubikscube[5].face[1][2] == G)&&(rubikscube[0].face[1][0] == G))||((rubikscube[5].face[2][2] == G)&&(rubikscube[0].face[2][0] == G))) {
+                //Pour chaque face
+                for (int l=0; l<6; ++l){
+                    //Si la ligne et la colonne valent toutes les deux 1 (donc que c'est au centre d'une face)
+                    if ((row == 1)&&(col == 1)) {
+                        //Et si le compteur >= 1, ne place pas la couleur
+                        if (cpt_centre_g >= 1){
+                            printf("Vous ne pouvez placer cette couleur ici");
+                            break;
+                        }
+                        else {
+                            //affiche la couleur a la case correspondante
+                            rubikscube[face].face[row][col] = G;
+                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                            cpt_centre_g += 1;
+                            cpt_g += 1;
+                        }
+                    }
+                }
+                //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
+                if (((rubikscube[0].face[0][0] == G)&&(rubikscube[1].face[0][0] == G))||((rubikscube[0].face[0][1] == G)&&(rubikscube[1].face[1][0] == G))||((rubikscube[0].face[0][2] == G)&&(rubikscube[1].face[2][0] == G))||((rubikscube[5].face[0][2] == G)&&(rubikscube[1].face[0][0] == G))||((rubikscube[5].face[0][1] == G)&&(rubikscube[1].face[0][1] == G))||((rubikscube[5].face[0][0] == G)&&(rubikscube[1].face[0][2] == G))||((rubikscube[4].face[0][0] == G)&&(rubikscube[1].face[2][2] == G))||((rubikscube[4].face[0][1] == G)&&(rubikscube[1].face[1][2] == G))||((rubikscube[4].face[0][2] == G)&&(rubikscube[1].face[0][2] == G))||((rubikscube[2].face[0][0] == G)&&(rubikscube[1].face[2][0] == G))||((rubikscube[2].face[0][1] == G)&&(rubikscube[1].face[2][1] == G))||((rubikscube[2].face[0][2] == G)&&(rubikscube[1].face[2][2] == G))||((rubikscube[2].face[0][0] == G)&&(rubikscube[0].face[0][2] == G))||((rubikscube[2].face[1][0] == G)&&(rubikscube[0].face[1][2] == G))||((rubikscube[2].face[2][0] == G)&&(rubikscube[0].face[2][2] == G))||((rubikscube[2].face[2][0] == G)&&(rubikscube[3].face[0][0] == G))||((rubikscube[2].face[2][1] == G)&&(rubikscube[3].face[0][1] == G))||((rubikscube[2].face[2][2] == G)&&(rubikscube[3].face[0][2] == G))||((rubikscube[2].face[0][2] == G)&&(rubikscube[4].face[0][0] == G))||((rubikscube[2].face[1][2] == G)&&(rubikscube[4].face[1][0] == G))||((rubikscube[2].face[2][2] == G)&&(rubikscube[4].face[2][0] == G))||((rubikscube[3].face[0][0] == G)&&(rubikscube[0].face[2][2] == G))||((rubikscube[3].face[1][0] == G)&&(rubikscube[0].face[2][1] == G))||((rubikscube[3].face[2][0] == G)&&(rubikscube[0].face[2][0] == G))||((rubikscube[3].face[0][2] == G)&&(rubikscube[4].face[2][0] == G))||((rubikscube[3].face[1][2] == G)&&(rubikscube[4].face[1][0] == G))||((rubikscube[3].face[2][2] == G)&&(rubikscube[4].face[2][0] == G))||((rubikscube[3].face[2][0] == G)&&(rubikscube[5].face[2][2] == G))||((rubikscube[3].face[2][1] == G)&&(rubikscube[5].face[2][1] == G))||((rubikscube[3].face[2][2] == G)&&(rubikscube[5].face[2][0] == G))||((rubikscube[5].face[0][0] == G)&&(rubikscube[4].face[0][2] == G))||((rubikscube[5].face[1][0] == G)&&(rubikscube[4].face[1][2] == G))||((rubikscube[5].face[2][0] == G)&&(rubikscube[4].face[2][2] == G))||((rubikscube[5].face[0][2] == G)&&(rubikscube[0].face[0][0] == G))||((rubikscube[5].face[1][2] == G)&&(rubikscube[0].face[1][0] == G))||((rubikscube[5].face[2][2] == G)&&(rubikscube[0].face[2][0] == G))){
                     rubikscube[face].face[row][col] = LG;
                     printf("Deux cases adjacentes ne doivent pas avoir la meme couleur !\n");
                     break;
                 }
+                //sors du switch
                 break;
             case 4:
+                //Si le compteur du nombre de face de cette couleur arrive a 9, la couleur ne sera pas appliquer
                 if (cpt_w >= 9){
                     printf("Vous ne pouvez pas placer plus de 9 fois cette couleur !\n");
                     break;
                 }
+                //Si la case choisi ce trouve au pole d'une des faces (cad les cases du centre de chaque arrete) alors ...
                 if (((0 == face) && (0 == row) && (1 == col)) || ((0 == face) && (1 == row) && (0 == col)) || ((0 == face) && (1 == row) && (2 == col)) || ((0 == face) && (2 == row) && (1 == col)) || ((1 == face) && (0 == row) && (1 == col)) || ((1 == face) && (1 == row) && (0 == col)) || ((1 == face) && (1 == row) && (2 == col)) || ((1 == face) && (2 == row) && (1 == col)) || ((2 == face) && (0 == row) && (1 == col)) || ((2 == face) && (1 == row) && (0 == col)) || ((2 == face) && (1 == row) && (2 == col)) || ((2 == face) && (2 == row) && (1 == col)) || ((3 == face) && (0 == row) && (1 == col)) || ((3 == face) && (1 == row) && (0 == col)) || ((3 == face) && (1 == row) && (2 == col)) || ((3 == face) && (2 == row) && (1 == col)) || ((4 == face) && (0 == row) && (1 == col)) || ((4 == face) && (1 == row) && (0 == col)) || ((4 == face) && (1 == row) && (2 == col)) || ((4 == face) && (2 == row) && (1 == col)) || ((5 == face) && (0 == row) && (1 == col)) || ((5 == face) && (1 == row) && (0 == col)) || ((5 == face) && (1 == row) && (2 == col)) || ((5 == face) && (2 == row) && (1 == col))){
+                    //Si le compteur du pole est entre 1 et 3 et que la case choisi est deja de la couleur choisi alors un message indique que la couleur est deja presente et quitte le switch
                     if (cpt_pole_w >= 1 && cpt_pole_w < 4){
                         if (rubikscube[face].face[row][col] == W){
                             printf("Tu as deja place cette couleur a cette case !\n");
                             break;
                         }
                     }
-                    rubikscube[face].face[row][col] = W;
+                    //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                     if (cpt_pole_w >= 4) {
                         printf("Il ne peut y avoir cette couleur sur les poles que 4 fois !\n");
-                        rubikscube[face].face[row][col] = LG;
                         break;
                     }
-                    cpt_pole_w = cpt_pole_w + 1;
-                    cpt_w = cpt_w + 1;
+                    else {
+                        //Applique la couleur au coordonner choisi
+                        rubikscube[face].face[row][col] = W;
+                        //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                        cpt_pole_w += 1;
+                        cpt_w += 1;
+                    }
                 }
-
+                //Pour les cases ce trouvant sur les cotes de chaque face
                 for (int l=0; l<6; ++l) {
                     for (int m = 0; m < 3; m += 2) {
                         for (int n = 0; n < 3; n += 2) {
+                            //Si la case choisi ce trouve sur un coté d'une face
                             if ((l == face) && (m == row) && (col == n)){
-                                if ((cpt_anlge_w >= 1 && cpt_anlge_w < 4) && (rubikscube[l].face[m][n] == W)){
+                                //Et si le cpt est entre 1 et 3 et que la case choisi est deja de cette couleur alors affiche le message et sors du switch
+                                if ((cpt_angle_w >= 1 && cpt_angle_w < 4) && (rubikscube[l].face[m][n] == W)){
                                     printf("Tu as deja place cette couleur a cette case !\n");
                                     break;
                                 }
-                                rubikscube[face].face[row][col] = W;
-                                if (cpt_anlge_w >= 4){
+                                //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
+                                if (cpt_angle_w >= 4){
                                     printf("Il ne peut y avoir cette couleur sur les cotes que 4 fois !\n");
-                                    rubikscube[face].face[row][col] = LG;
                                     break;
                                 }
-                                cpt_anlge_w = cpt_anlge_w + 1;
-                                cpt_w = cpt_w + 1;
-                            }
-                        }
-                    }
-                }
+                                else{
+                                    //Applique la couleur au coordonner choisi
+                                    rubikscube[face].face[row][col] = W;
+                                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                    cpt_angle_w += 1;
+                                    cpt_w += 1;
+                                    break;
+                                }
 
-                for (int l=0; l<6; ++l){
-                    if ((row == 1) && (col == 1)) {
-                        if ((rubikscube[l].face[1][1] == W)) {
-                            if (cpt_centre_w >= 1) {
-                                if (l == face) {
-                                    printf("Tu as deja place cette couleur a cette case !\n");
-                                    break;
-                                }
-                                printf("Il ne peut y avoir qu'une fois cette couleur au centre des faces !\n");
-                                rubikscube[face].face[row][col] = LG;
-                                break;
                             }
-                            cpt_centre_w = cpt_centre_w + 1;
-                            cpt_w = cpt_w + 1;
                         }
-                        rubikscube[face].face[row][col] = W;
                     }
                 }
-                if (((rubikscube[0].face[0][0] == W)&&(rubikscube[1].face[0][0] == W))||((rubikscube[0].face[0][1] == W)&&(rubikscube[1].face[1][0] == W))||((rubikscube[0].face[0][2] == W)&&(rubikscube[1].face[2][0] == W))||((rubikscube[5].face[0][2] == W)&&(rubikscube[1].face[0][0] == W))||((rubikscube[5].face[0][1] == W)&&(rubikscube[1].face[0][1] == W))||((rubikscube[5].face[0][0] == W)&&(rubikscube[1].face[0][2] == W))||((rubikscube[4].face[0][0] == W)&&(rubikscube[1].face[2][2] == W))||((rubikscube[4].face[0][1] == W)&&(rubikscube[1].face[1][2] == W))||((rubikscube[4].face[0][2] == W)&&(rubikscube[1].face[0][2] == W))||((rubikscube[2].face[0][0] == W)&&(rubikscube[1].face[2][0] == W))||((rubikscube[2].face[0][1] == W)&&(rubikscube[1].face[2][1] == W))||((rubikscube[2].face[0][2] == W)&&(rubikscube[1].face[2][2] == W))||((rubikscube[2].face[0][0] == W)&&(rubikscube[0].face[0][2] == W))||((rubikscube[2].face[1][0] == W)&&(rubikscube[0].face[1][2] == W))||((rubikscube[2].face[2][0] == W)&&(rubikscube[0].face[2][2] == W))||((rubikscube[2].face[2][0] == W)&&(rubikscube[3].face[0][0] == W))||((rubikscube[2].face[2][1] == W)&&(rubikscube[3].face[0][1] == W))||((rubikscube[2].face[2][2] == W)&&(rubikscube[3].face[0][2] == W))||((rubikscube[2].face[0][2] == W)&&(rubikscube[4].face[0][0] == W))||((rubikscube[2].face[1][2] == W)&&(rubikscube[4].face[1][0] == W))||((rubikscube[2].face[2][2] == W)&&(rubikscube[4].face[2][0] == W))||((rubikscube[3].face[0][0] == W)&&(rubikscube[0].face[2][2] == W))||((rubikscube[3].face[1][0] == W)&&(rubikscube[0].face[2][1] == W))||((rubikscube[3].face[2][0] == W)&&(rubikscube[0].face[2][0] == W))||((rubikscube[3].face[0][2] == W)&&(rubikscube[4].face[2][0] == W))||((rubikscube[3].face[1][2] == W)&&(rubikscube[4].face[1][0] == W))||((rubikscube[3].face[2][2] == W)&&(rubikscube[4].face[2][0] == W))||((rubikscube[3].face[2][0] == W)&&(rubikscube[5].face[2][2] == W))||((rubikscube[3].face[2][1] == W)&&(rubikscube[5].face[2][1] == W))||((rubikscube[3].face[2][2] == W)&&(rubikscube[5].face[2][0] == W))||((rubikscube[5].face[0][0] == W)&&(rubikscube[4].face[0][2] == W))||((rubikscube[5].face[1][0] == W)&&(rubikscube[4].face[1][2] == W))||((rubikscube[5].face[2][0] == W)&&(rubikscube[4].face[2][2] == W))||((rubikscube[5].face[0][2] == W)&&(rubikscube[0].face[0][0] == W))||((rubikscube[5].face[1][2] == W)&&(rubikscube[0].face[1][0] == W))||((rubikscube[5].face[2][2] == W)&&(rubikscube[0].face[2][0] == W))) {
+                //Pour chaque face
+                for (int l=0; l<6; ++l){
+                    //Si la ligne et la colonne valent toutes les deux 1 (donc que c'est au centre d'une face)
+                    if ((row == 1)&&(col == 1)) {
+                        //Et si le compteur >= 1, ne place pas la couleur
+                        if (cpt_centre_w >= 1){
+                            printf("Vous ne pouvez placer cette couleur ici");
+                            break;
+                        }
+                        else {
+                            //affiche la couleur a la case correspondante
+                            rubikscube[face].face[row][col] = W;
+                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                            cpt_centre_w += 1;
+                            cpt_w += 1;
+                        }
+                    }
+                }
+                //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
+                if (((rubikscube[0].face[0][0] == W)&&(rubikscube[1].face[0][0] == W))||((rubikscube[0].face[0][1] == W)&&(rubikscube[1].face[1][0] == W))||((rubikscube[0].face[0][2] == W)&&(rubikscube[1].face[2][0] == W))||((rubikscube[5].face[0][2] == W)&&(rubikscube[1].face[0][0] == W))||((rubikscube[5].face[0][1] == W)&&(rubikscube[1].face[0][1] == W))||((rubikscube[5].face[0][0] == W)&&(rubikscube[1].face[0][2] == W))||((rubikscube[4].face[0][0] == W)&&(rubikscube[1].face[2][2] == W))||((rubikscube[4].face[0][1] == W)&&(rubikscube[1].face[1][2] == W))||((rubikscube[4].face[0][2] == W)&&(rubikscube[1].face[0][2] == W))||((rubikscube[2].face[0][0] == W)&&(rubikscube[1].face[2][0] == W))||((rubikscube[2].face[0][1] == W)&&(rubikscube[1].face[2][1] == W))||((rubikscube[2].face[0][2] == W)&&(rubikscube[1].face[2][2] == W))||((rubikscube[2].face[0][0] == W)&&(rubikscube[0].face[0][2] == W))||((rubikscube[2].face[1][0] == W)&&(rubikscube[0].face[1][2] == W))||((rubikscube[2].face[2][0] == W)&&(rubikscube[0].face[2][2] == W))||((rubikscube[2].face[2][0] == W)&&(rubikscube[3].face[0][0] == W))||((rubikscube[2].face[2][1] == W)&&(rubikscube[3].face[0][1] == W))||((rubikscube[2].face[2][2] == W)&&(rubikscube[3].face[0][2] == W))||((rubikscube[2].face[0][2] == W)&&(rubikscube[4].face[0][0] == W))||((rubikscube[2].face[1][2] == W)&&(rubikscube[4].face[1][0] == W))||((rubikscube[2].face[2][2] == W)&&(rubikscube[4].face[2][0] == W))||((rubikscube[3].face[0][0] == W)&&(rubikscube[0].face[2][2] == W))||((rubikscube[3].face[1][0] == W)&&(rubikscube[0].face[2][1] == W))||((rubikscube[3].face[2][0] == W)&&(rubikscube[0].face[2][0] == W))||((rubikscube[3].face[0][2] == W)&&(rubikscube[4].face[2][0] == W))||((rubikscube[3].face[1][2] == W)&&(rubikscube[4].face[1][0] == W))||((rubikscube[3].face[2][2] == W)&&(rubikscube[4].face[2][0] == W))||((rubikscube[3].face[2][0] == W)&&(rubikscube[5].face[2][2] == W))||((rubikscube[3].face[2][1] == W)&&(rubikscube[5].face[2][1] == W))||((rubikscube[3].face[2][2] == W)&&(rubikscube[5].face[2][0] == W))||((rubikscube[5].face[0][0] == W)&&(rubikscube[4].face[0][2] == W))||((rubikscube[5].face[1][0] == W)&&(rubikscube[4].face[1][2] == W))||((rubikscube[5].face[2][0] == W)&&(rubikscube[4].face[2][2] == W))||((rubikscube[5].face[0][2] == W)&&(rubikscube[0].face[0][0] == W))||((rubikscube[5].face[1][2] == W)&&(rubikscube[0].face[1][0] == W))||((rubikscube[5].face[2][2] == W)&&(rubikscube[0].face[2][0] == W))){
                     rubikscube[face].face[row][col] = LG;
                     printf("Deux cases adjacentes ne doivent pas avoir la meme couleur !\n");
                     break;
                 }
+                //sors du switch
                 break;
             case 5:
+                //Si le compteur du nombre de face de cette couleur arrive a 9, la couleur ne sera pas appliquer
                 if (cpt_y >= 9){
                     printf("Vous ne pouvez pas placer plus de 9 fois cette couleur !\n");
                     break;
                 }
+                //Si la case choisi ce trouve au pole d'une des faces (cad les cases du centre de chaque arrete) alors ...
                 if (((0 == face) && (0 == row) && (1 == col)) || ((0 == face) && (1 == row) && (0 == col)) || ((0 == face) && (1 == row) && (2 == col)) || ((0 == face) && (2 == row) && (1 == col)) || ((1 == face) && (0 == row) && (1 == col)) || ((1 == face) && (1 == row) && (0 == col)) || ((1 == face) && (1 == row) && (2 == col)) || ((1 == face) && (2 == row) && (1 == col)) || ((2 == face) && (0 == row) && (1 == col)) || ((2 == face) && (1 == row) && (0 == col)) || ((2 == face) && (1 == row) && (2 == col)) || ((2 == face) && (2 == row) && (1 == col)) || ((3 == face) && (0 == row) && (1 == col)) || ((3 == face) && (1 == row) && (0 == col)) || ((3 == face) && (1 == row) && (2 == col)) || ((3 == face) && (2 == row) && (1 == col)) || ((4 == face) && (0 == row) && (1 == col)) || ((4 == face) && (1 == row) && (0 == col)) || ((4 == face) && (1 == row) && (2 == col)) || ((4 == face) && (2 == row) && (1 == col)) || ((5 == face) && (0 == row) && (1 == col)) || ((5 == face) && (1 == row) && (0 == col)) || ((5 == face) && (1 == row) && (2 == col)) || ((5 == face) && (2 == row) && (1 == col))){
+                    //Si le compteur du pole est entre 1 et 3 et que la case choisi est deja de la couleur choisi alors un message indique que la couleur est deja presente et quitte le switch
                     if (cpt_pole_y >= 1 && cpt_pole_y < 4){
                         if (rubikscube[face].face[row][col] == Y){
                             printf("Tu as deja place cette couleur a cette case !\n");
                             break;
                         }
                     }
-                    rubikscube[face].face[row][col] = Y;
+                    //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                     if (cpt_pole_y >= 4) {
                         printf("Il ne peut y avoir cette couleur sur les poles que 4 fois !\n");
-                        rubikscube[face].face[row][col] = LG;
                         break;
                     }
-                    cpt_pole_y = cpt_pole_y + 1;
-                    cpt_y = cpt_y + 1;
+                    else {
+                        //Applique la couleur au coordonner choisi
+                        rubikscube[face].face[row][col] = Y;
+                        //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                        cpt_pole_y += 1;
+                        cpt_y += 1;
+                    }
                 }
-
+                //Pour les cases ce trouvant sur les cotes de chaque face
                 for (int l=0; l<6; ++l) {
                     for (int m = 0; m < 3; m += 2) {
                         for (int n = 0; n < 3; n += 2) {
+                            //Si la case choisi ce trouve sur un coté d'une face
                             if ((l == face) && (m == row) && (col == n)){
+                                //Et si le cpt est entre 1 et 3 et que la case choisi est deja de cette couleur alors affiche le message et sors du switch
                                 if ((cpt_angle_y >= 1 && cpt_angle_y < 4) && (rubikscube[l].face[m][n] == Y)){
                                     printf("Tu as deja place cette couleur a cette case !\n");
                                     break;
                                 }
-                                rubikscube[face].face[row][col] = Y;
+                                //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                                 if (cpt_angle_y >= 4){
                                     printf("Il ne peut y avoir cette couleur sur les cotes que 4 fois !\n");
-                                    rubikscube[face].face[row][col] = LG;
                                     break;
                                 }
-                                cpt_angle_y = cpt_angle_y + 1;
-                                cpt_y = cpt_y + 1;
-                            }
-                        }
-                    }
-                }
+                                else{
+                                    //Applique la couleur au coordonner choisi
+                                    rubikscube[face].face[row][col] = Y;
+                                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                    cpt_angle_y += 1;
+                                    cpt_y += 1;
+                                    break;
+                                }
 
-                for (int l=0; l<6; ++l){
-                    if ((row == 1) && (col == 1)) {
-                        if ((rubikscube[l].face[1][1] == Y)) {
-                            if (cpt_centre_y >= 1) {
-                                if (l == face) {
-                                    printf("Tu as deja place cette couleur a cette case !\n");
-                                    break;
-                                }
-                                printf("Il ne peut y avoir qu'une fois cette couleur au centre des faces !\n");
-                                rubikscube[face].face[row][col] = LG;
-                                break;
                             }
-                            cpt_centre_y = cpt_centre_y + 1;
-                            cpt_y = cpt_y + 1;
                         }
-                        rubikscube[face].face[row][col] = Y;
                     }
                 }
-                if (((rubikscube[0].face[0][0] == Y)&&(rubikscube[1].face[0][0] == Y))||((rubikscube[0].face[0][1] == Y)&&(rubikscube[1].face[1][0] == Y))||((rubikscube[0].face[0][2] == Y)&&(rubikscube[1].face[2][0] == Y))||((rubikscube[5].face[0][2] == Y)&&(rubikscube[1].face[0][0] == Y))||((rubikscube[5].face[0][1] == Y)&&(rubikscube[1].face[0][1] == Y))||((rubikscube[5].face[0][0] == Y)&&(rubikscube[1].face[0][2] == Y))||((rubikscube[4].face[0][0] == Y)&&(rubikscube[1].face[2][2] == Y))||((rubikscube[4].face[0][1] == Y)&&(rubikscube[1].face[1][2] == Y))||((rubikscube[4].face[0][2] == Y)&&(rubikscube[1].face[0][2] == Y))||((rubikscube[2].face[0][0] == Y)&&(rubikscube[1].face[2][0] == Y))||((rubikscube[2].face[0][1] == Y)&&(rubikscube[1].face[2][1] == Y))||((rubikscube[2].face[0][2] == Y)&&(rubikscube[1].face[2][2] == Y))||((rubikscube[2].face[0][0] == Y)&&(rubikscube[0].face[0][2] == Y))||((rubikscube[2].face[1][0] == Y)&&(rubikscube[0].face[1][2] == Y))||((rubikscube[2].face[2][0] == Y)&&(rubikscube[0].face[2][2] == Y))||((rubikscube[2].face[2][0] == Y)&&(rubikscube[3].face[0][0] == Y))||((rubikscube[2].face[2][1] == Y)&&(rubikscube[3].face[0][1] == Y))||((rubikscube[2].face[2][2] == Y)&&(rubikscube[3].face[0][2] == Y))||((rubikscube[2].face[0][2] == Y)&&(rubikscube[4].face[0][0] == Y))||((rubikscube[2].face[1][2] == Y)&&(rubikscube[4].face[1][0] == Y))||((rubikscube[2].face[2][2] == Y)&&(rubikscube[4].face[2][0] == Y))||((rubikscube[3].face[0][0] == Y)&&(rubikscube[0].face[2][2] == Y))||((rubikscube[3].face[1][0] == Y)&&(rubikscube[0].face[2][1] == Y))||((rubikscube[3].face[2][0] == Y)&&(rubikscube[0].face[2][0] == Y))||((rubikscube[3].face[0][2] == Y)&&(rubikscube[4].face[2][0] == Y))||((rubikscube[3].face[1][2] == Y)&&(rubikscube[4].face[1][0] == Y))||((rubikscube[3].face[2][2] == Y)&&(rubikscube[4].face[2][0] == Y))||((rubikscube[3].face[2][0] == Y)&&(rubikscube[5].face[2][2] == Y))||((rubikscube[3].face[2][1] == Y)&&(rubikscube[5].face[2][1] == Y))||((rubikscube[3].face[2][2] == Y)&&(rubikscube[5].face[2][0] == Y))||((rubikscube[5].face[0][0] == Y)&&(rubikscube[4].face[0][2] == Y))||((rubikscube[5].face[1][0] == Y)&&(rubikscube[4].face[1][2] == Y))||((rubikscube[5].face[2][0] == Y)&&(rubikscube[4].face[2][2] == Y))||((rubikscube[5].face[0][2] == Y)&&(rubikscube[0].face[0][0] == Y))||((rubikscube[5].face[1][2] == Y)&&(rubikscube[0].face[1][0] == Y))||((rubikscube[5].face[2][2] == Y)&&(rubikscube[0].face[2][0] == Y))) {
+                //Pour chaque face
+                for (int l=0; l<6; ++l){
+                    //Si la ligne et la colonne valent toutes les deux 1 (donc que c'est au centre d'une face)
+                    if ((row == 1)&&(col == 1)) {
+                        //Et si le compteur >= 1, ne place pas la couleur
+                        if (cpt_centre_y >= 1){
+                            printf("Vous ne pouvez placer cette couleur ici");
+                            break;
+                        }
+                        else {
+                            //affiche la couleur a la case correspondante
+                            rubikscube[face].face[row][col] = Y;
+                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                            cpt_centre_y += 1;
+                            cpt_y += 1;
+                        }
+                    }
+                }
+                //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
+                if (((rubikscube[0].face[0][0] == Y)&&(rubikscube[1].face[0][0] == Y))||((rubikscube[0].face[0][1] == Y)&&(rubikscube[1].face[1][0] == Y))||((rubikscube[0].face[0][2] == Y)&&(rubikscube[1].face[2][0] == Y))||((rubikscube[5].face[0][2] == Y)&&(rubikscube[1].face[0][0] == Y))||((rubikscube[5].face[0][1] == Y)&&(rubikscube[1].face[0][1] == Y))||((rubikscube[5].face[0][0] == Y)&&(rubikscube[1].face[0][2] == Y))||((rubikscube[4].face[0][0] == Y)&&(rubikscube[1].face[2][2] == Y))||((rubikscube[4].face[0][1] == Y)&&(rubikscube[1].face[1][2] == Y))||((rubikscube[4].face[0][2] == Y)&&(rubikscube[1].face[0][2] == Y))||((rubikscube[2].face[0][0] == Y)&&(rubikscube[1].face[2][0] == Y))||((rubikscube[2].face[0][1] == Y)&&(rubikscube[1].face[2][1] == Y))||((rubikscube[2].face[0][2] == Y)&&(rubikscube[1].face[2][2] == Y))||((rubikscube[2].face[0][0] == Y)&&(rubikscube[0].face[0][2] == Y))||((rubikscube[2].face[1][0] == Y)&&(rubikscube[0].face[1][2] == Y))||((rubikscube[2].face[2][0] == Y)&&(rubikscube[0].face[2][2] == Y))||((rubikscube[2].face[2][0] == Y)&&(rubikscube[3].face[0][0] == Y))||((rubikscube[2].face[2][1] == Y)&&(rubikscube[3].face[0][1] == Y))||((rubikscube[2].face[2][2] == Y)&&(rubikscube[3].face[0][2] == Y))||((rubikscube[2].face[0][2] == Y)&&(rubikscube[4].face[0][0] == Y))||((rubikscube[2].face[1][2] == Y)&&(rubikscube[4].face[1][0] == Y))||((rubikscube[2].face[2][2] == Y)&&(rubikscube[4].face[2][0] == Y))||((rubikscube[3].face[0][0] == Y)&&(rubikscube[0].face[2][2] == Y))||((rubikscube[3].face[1][0] == Y)&&(rubikscube[0].face[2][1] == Y))||((rubikscube[3].face[2][0] == Y)&&(rubikscube[0].face[2][0] == Y))||((rubikscube[3].face[0][2] == Y)&&(rubikscube[4].face[2][0] == Y))||((rubikscube[3].face[1][2] == Y)&&(rubikscube[4].face[1][0] == Y))||((rubikscube[3].face[2][2] == Y)&&(rubikscube[4].face[2][0] == Y))||((rubikscube[3].face[2][0] == Y)&&(rubikscube[5].face[2][2] == Y))||((rubikscube[3].face[2][1] == Y)&&(rubikscube[5].face[2][1] == Y))||((rubikscube[3].face[2][2] == Y)&&(rubikscube[5].face[2][0] == Y))||((rubikscube[5].face[0][0] == Y)&&(rubikscube[4].face[0][2] == Y))||((rubikscube[5].face[1][0] == Y)&&(rubikscube[4].face[1][2] == Y))||((rubikscube[5].face[2][0] == Y)&&(rubikscube[4].face[2][2] == Y))||((rubikscube[5].face[0][2] == Y)&&(rubikscube[0].face[0][0] == Y))||((rubikscube[5].face[1][2] == Y)&&(rubikscube[0].face[1][0] == Y))||((rubikscube[5].face[2][2] == Y)&&(rubikscube[0].face[2][0] == Y))){
                     rubikscube[face].face[row][col] = LG;
                     printf("Deux cases adjacentes ne doivent pas avoir la meme couleur !\n");
                     break;
                 }
+                //sors du switch
                 break;
             case 6:
+                //Si le compteur du nombre de face de cette couleur arrive a 9, la couleur ne sera pas appliquer
                 if (cpt_o >= 9){
                     printf("Vous ne pouvez pas placer plus de 9 fois cette couleur !\n");
                     break;
                 }
+                //Si la case choisi ce trouve au pole d'une des faces (cad les cases du centre de chaque arrete) alors ...
                 if (((0 == face) && (0 == row) && (1 == col)) || ((0 == face) && (1 == row) && (0 == col)) || ((0 == face) && (1 == row) && (2 == col)) || ((0 == face) && (2 == row) && (1 == col)) || ((1 == face) && (0 == row) && (1 == col)) || ((1 == face) && (1 == row) && (0 == col)) || ((1 == face) && (1 == row) && (2 == col)) || ((1 == face) && (2 == row) && (1 == col)) || ((2 == face) && (0 == row) && (1 == col)) || ((2 == face) && (1 == row) && (0 == col)) || ((2 == face) && (1 == row) && (2 == col)) || ((2 == face) && (2 == row) && (1 == col)) || ((3 == face) && (0 == row) && (1 == col)) || ((3 == face) && (1 == row) && (0 == col)) || ((3 == face) && (1 == row) && (2 == col)) || ((3 == face) && (2 == row) && (1 == col)) || ((4 == face) && (0 == row) && (1 == col)) || ((4 == face) && (1 == row) && (0 == col)) || ((4 == face) && (1 == row) && (2 == col)) || ((4 == face) && (2 == row) && (1 == col)) || ((5 == face) && (0 == row) && (1 == col)) || ((5 == face) && (1 == row) && (0 == col)) || ((5 == face) && (1 == row) && (2 == col)) || ((5 == face) && (2 == row) && (1 == col))){
+                    //Si le compteur du pole est entre 1 et 3 et que la case choisi est deja de la couleur choisi alors un message indique que la couleur est deja presente et quitte le switch
                     if (cpt_pole_o >= 1 && cpt_pole_o < 4){
                         if (rubikscube[face].face[row][col] == O){
                             printf("Tu as deja place cette couleur a cette case !\n");
                             break;
                         }
                     }
-                    rubikscube[face].face[row][col] = O;
+                    //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
                     if (cpt_pole_o >= 4) {
                         printf("Il ne peut y avoir cette couleur sur les poles que 4 fois !\n");
-                        rubikscube[face].face[row][col] = LG;
                         break;
                     }
-                    cpt_pole_o = cpt_pole_o + 1;
-                    cpt_o = cpt_o + 1;
+                    else {
+                        //Applique la couleur au coordonner choisi
+                        rubikscube[face].face[row][col] = O;
+                        //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                        cpt_pole_o += 1;
+                        cpt_o += 1;
+                    }
                 }
-
+                //Pour les cases ce trouvant sur les cotes de chaque face
                 for (int l=0; l<6; ++l) {
                     for (int m = 0; m < 3; m += 2) {
                         for (int n = 0; n < 3; n += 2) {
+                            //Si la case choisi ce trouve sur un coté d'une face
                             if ((l == face) && (m == row) && (col == n)){
-                                if ((cpt_angle_o >= 1 && cpt_angle_o < 4) && (rubikscube[l].face[m][n] == O)){
+                                //Et si le cpt est entre 1 et 3 et que la case choisi est deja de cette couleur alors affiche le message et sors du switch
+                                if ((cpt_angle_y >= 1 && cpt_angle_y < 4) && (rubikscube[l].face[m][n] == O)){
                                     printf("Tu as deja place cette couleur a cette case !\n");
                                     break;
                                 }
-                                rubikscube[face].face[row][col] = O;
-                                if (cpt_angle_o >= 4){
+                                //Si compteur plus grand ou egale a 4, supprime la couleur appliquer et affiche le message d'alerte et sors du switch
+                                if (cpt_angle_y >= 4){
                                     printf("Il ne peut y avoir cette couleur sur les cotes que 4 fois !\n");
-                                    rubikscube[face].face[row][col] = LG;
                                     break;
                                 }
-                                cpt_angle_o = cpt_angle_o + 1;
-                                cpt_o = cpt_o + 1;
-                            }
-                        }
-                    }
-                }
+                                else{
+                                    //Applique la couleur au coordonner choisi
+                                    rubikscube[face].face[row][col] = O;
+                                    //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                                    cpt_angle_o += 1;
+                                    cpt_o += 1;
+                                    break;
+                                }
 
-                for (int l=0; l<6; ++l){
-                    if ((row == 1) && (col == 1)) {
-                        if ((rubikscube[l].face[1][1] == O)) {
-                            if (cpt_centre_o >= 1) {
-                                if (l == face) {
-                                    printf("Tu as deja place cette couleur a cette case !\n");
-                                    break;
-                                }
-                                printf("Il ne peut y avoir qu'une fois cette couleur au centre des faces !\n");
-                                rubikscube[face].face[row][col] = LG;
-                                break;
                             }
-                            cpt_centre_o = cpt_centre_o + 1;
-                            cpt_o = cpt_o + 1;
                         }
-                        rubikscube[face].face[row][col] = O;
                     }
                 }
-                if (((rubikscube[0].face[0][0] == O)&&(rubikscube[1].face[0][0] == O))||((rubikscube[0].face[0][1] == O)&&(rubikscube[1].face[1][0] == O))||((rubikscube[0].face[0][2] == O)&&(rubikscube[1].face[2][0] == O))||((rubikscube[5].face[0][2] == O)&&(rubikscube[1].face[0][0] == O))||((rubikscube[5].face[0][1] == O)&&(rubikscube[1].face[0][1] == O))||((rubikscube[5].face[0][0] == O)&&(rubikscube[1].face[0][2] == O))||((rubikscube[4].face[0][0] == O)&&(rubikscube[1].face[2][2] == O))||((rubikscube[4].face[0][1] == O)&&(rubikscube[1].face[1][2] == O))||((rubikscube[4].face[0][2] == O)&&(rubikscube[1].face[0][2] == O))||((rubikscube[2].face[0][0] == O)&&(rubikscube[1].face[2][0] == O))||((rubikscube[2].face[0][1] == O)&&(rubikscube[1].face[2][1] == O))||((rubikscube[2].face[0][2] == O)&&(rubikscube[1].face[2][2] == O))||((rubikscube[2].face[0][0] == O)&&(rubikscube[0].face[0][2] == O))||((rubikscube[2].face[1][0] == O)&&(rubikscube[0].face[1][2] == O))||((rubikscube[2].face[2][0] == O)&&(rubikscube[0].face[2][2] == O))||((rubikscube[2].face[2][0] == O)&&(rubikscube[3].face[0][0] == O))||((rubikscube[2].face[2][1] == O)&&(rubikscube[3].face[0][1] == O))||((rubikscube[2].face[2][2] == O)&&(rubikscube[3].face[0][2] == O))||((rubikscube[2].face[0][2] == O)&&(rubikscube[4].face[0][0] == O))||((rubikscube[2].face[1][2] == O)&&(rubikscube[4].face[1][0] == O))||((rubikscube[2].face[2][2] == O)&&(rubikscube[4].face[2][0] == O))||((rubikscube[3].face[0][0] == O)&&(rubikscube[0].face[2][2] == O))||((rubikscube[3].face[1][0] == O)&&(rubikscube[0].face[2][1] == O))||((rubikscube[3].face[2][0] == O)&&(rubikscube[0].face[2][0] == O))||((rubikscube[3].face[0][2] == O)&&(rubikscube[4].face[2][0] == O))||((rubikscube[3].face[1][2] == O)&&(rubikscube[4].face[1][0] == O))||((rubikscube[3].face[2][2] == O)&&(rubikscube[4].face[2][0] == O))||((rubikscube[3].face[2][0] == O)&&(rubikscube[5].face[2][2] == O))||((rubikscube[3].face[2][1] == O)&&(rubikscube[5].face[2][1] == O))||((rubikscube[3].face[2][2] == O)&&(rubikscube[5].face[2][0] == O))||((rubikscube[5].face[0][0] == O)&&(rubikscube[4].face[0][2] == O))||((rubikscube[5].face[1][0] == O)&&(rubikscube[4].face[1][2] == O))||((rubikscube[5].face[2][0] == O)&&(rubikscube[4].face[2][2] == O))||((rubikscube[5].face[0][2] == O)&&(rubikscube[0].face[0][0] == O))||((rubikscube[5].face[1][2] == O)&&(rubikscube[0].face[1][0] == O))||((rubikscube[5].face[2][2] == O)&&(rubikscube[0].face[2][0] == O))) {
+                //Pour chaque face
+                for (int l=0; l<6; ++l){
+                    //Si la ligne et la colonne valent toutes les deux 1 (donc que c'est au centre d'une face)
+                    if ((row == 1)&&(col == 1)) {
+                        //Et si le compteur >= 1, ne place pas la couleur
+                        if (cpt_centre_y >= 1){
+                            printf("Vous ne pouvez placer cette couleur ici");
+                            break;
+                        }
+                        else {
+                            //affiche la couleur a la case correspondante
+                            rubikscube[face].face[row][col] = O;
+                            //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
+                            cpt_centre_o += 1;
+                            cpt_o += 1;
+                        }
+                    }
+                }
+                //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
+                if (((rubikscube[0].face[0][0] == O)&&(rubikscube[1].face[0][0] == O))||((rubikscube[0].face[0][1] == O)&&(rubikscube[1].face[1][0] == O))||((rubikscube[0].face[0][2] == O)&&(rubikscube[1].face[2][0] == O))||((rubikscube[5].face[0][2] == O)&&(rubikscube[1].face[0][0] == O))||((rubikscube[5].face[0][1] == O)&&(rubikscube[1].face[0][1] == O))||((rubikscube[5].face[0][0] == O)&&(rubikscube[1].face[0][2] == O))||((rubikscube[4].face[0][0] == O)&&(rubikscube[1].face[2][2] == O))||((rubikscube[4].face[0][1] == O)&&(rubikscube[1].face[1][2] == O))||((rubikscube[4].face[0][2] == O)&&(rubikscube[1].face[0][2] == O))||((rubikscube[2].face[0][0] == O)&&(rubikscube[1].face[2][0] == O))||((rubikscube[2].face[0][1] == O)&&(rubikscube[1].face[2][1] == O))||((rubikscube[2].face[0][2] == O)&&(rubikscube[1].face[2][2] == O))||((rubikscube[2].face[0][0] == O)&&(rubikscube[0].face[0][2] == O))||((rubikscube[2].face[1][0] == O)&&(rubikscube[0].face[1][2] == O))||((rubikscube[2].face[2][0] == O)&&(rubikscube[0].face[2][2] == O))||((rubikscube[2].face[2][0] == O)&&(rubikscube[3].face[0][0] == O))||((rubikscube[2].face[2][1] == O)&&(rubikscube[3].face[0][1] == O))||((rubikscube[2].face[2][2] == O)&&(rubikscube[3].face[0][2] == O))||((rubikscube[2].face[0][2] == O)&&(rubikscube[4].face[0][0] == O))||((rubikscube[2].face[1][2] == O)&&(rubikscube[4].face[1][0] == O))||((rubikscube[2].face[2][2] == O)&&(rubikscube[4].face[2][0] == O))||((rubikscube[3].face[0][0] == O)&&(rubikscube[0].face[2][2] == O))||((rubikscube[3].face[1][0] == O)&&(rubikscube[0].face[2][1] == O))||((rubikscube[3].face[2][0] == O)&&(rubikscube[0].face[2][0] == O))||((rubikscube[3].face[0][2] == O)&&(rubikscube[4].face[2][0] == O))||((rubikscube[3].face[1][2] == O)&&(rubikscube[4].face[1][0] == O))||((rubikscube[3].face[2][2] == O)&&(rubikscube[4].face[2][0] == O))||((rubikscube[3].face[2][0] == O)&&(rubikscube[5].face[2][2] == O))||((rubikscube[3].face[2][1] == O)&&(rubikscube[5].face[2][1] == O))||((rubikscube[3].face[2][2] == O)&&(rubikscube[5].face[2][0] == O))||((rubikscube[5].face[0][0] == O)&&(rubikscube[4].face[0][2] == O))||((rubikscube[5].face[1][0] == O)&&(rubikscube[4].face[1][2] == O))||((rubikscube[5].face[2][0] == O)&&(rubikscube[4].face[2][2] == O))||((rubikscube[5].face[0][2] == O)&&(rubikscube[0].face[0][0] == O))||((rubikscube[5].face[1][2] == O)&&(rubikscube[0].face[1][0] == O))||((rubikscube[5].face[2][2] == O)&&(rubikscube[0].face[2][0] == O))){
                     rubikscube[face].face[row][col] = LG;
                     printf("Deux cases adjacentes ne doivent pas avoir la meme couleur !\n");
                     break;
                 }
+                //sors du switch
                 break;
         }
         //Met un espace et affiche la modification apporter ou non sur le cube
