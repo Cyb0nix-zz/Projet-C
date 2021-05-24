@@ -1079,6 +1079,7 @@ void front_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
 }
 
 void back_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
+    //Effectue une rotation de la face BACK dans le sens anti-horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(LEFT)].face[i][0];
@@ -1107,6 +1108,7 @@ void back_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
 }
 
 void left_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
+    //Effectue une rotation de la face LEFT dans le sens anti-horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[2-i][2];
@@ -1133,6 +1135,7 @@ void left_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
 }
 
 void right_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
+    //Effectue une rotation de la face Right dans le sens anti-horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(FRONT)].face[2-i][2];
@@ -1159,6 +1162,7 @@ void right_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
 }
 
 void up_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
+    //Effectue une rotation de la face up dans le sens anti-horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[0][2-i];
@@ -1185,6 +1189,7 @@ void up_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
 }
 
 void down_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
+    //Effectue une rotation de la face Down dans le sens anti-horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[2][i];
@@ -1212,6 +1217,7 @@ void down_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
 }
 
 void vertical_rotation(RUBIKS_SIDE* rubikscube){
+    //Effectue une rotation verticale du cube
     right_clockwise(rubikscube, 2);
     left_anticlockwise(rubikscube,2);
     T_COLOR tmp;
@@ -1228,6 +1234,7 @@ void vertical_rotation(RUBIKS_SIDE* rubikscube){
 }
 
 void quarter_vertical_rotation(RUBIKS_SIDE* rubikscube){
+    //Effectue un quart de rotation verticale du cube
     left_anticlockwise(rubikscube,1);
     right_clockwise(rubikscube,1);
     T_COLOR tmp;
@@ -1244,6 +1251,7 @@ void quarter_vertical_rotation(RUBIKS_SIDE* rubikscube){
 
 
 void horizontal_rotation(RUBIKS_SIDE* rubikscube){
+    //Effectue une rotation horizontale du cube
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
@@ -1258,6 +1266,7 @@ void horizontal_rotation(RUBIKS_SIDE* rubikscube){
 }
 
 void quarter_horizontal_rotation(RUBIKS_SIDE* rubikscube){
+    //Effectue un quart de rotation horizontale du cube
     down_clockwise(rubikscube,1);
     up_anticlockwise(rubikscube,1);
     T_COLOR tmp;
@@ -1271,6 +1280,7 @@ void quarter_horizontal_rotation(RUBIKS_SIDE* rubikscube){
 }
 
 void move_rubiks(RUBIKS_SIDE* rubikscube){
+    //Menu permettant d'effectuer les mouvements sur le cube
     int move = 1;
     for (int i = 0; i < 84; ++i) {
         printf("-");
@@ -1498,86 +1508,14 @@ void move_rubiks(RUBIKS_SIDE* rubikscube){
 }
 
 void solve_rubiks(RUBIKS_SIDE* rubikscube){
+    // Fonction permettant de résoundre
     make_cross(rubikscube);
 
 }
 
-void corner(RUBIKS_SIDE* rubikscube){
-    
-}
-
-/*void make_cross(RUBIKS_SIDE* rubikscube){
-   int cross = 1;
-    if (rubikscube[side_to_index(UP)].face[0][1] != W && rubikscube[side_to_index(UP)].face[2][1] != W){
-        cross = 0;
-    }else{
-        cross = 1;
-    }
-    for (int i = 0; i < 3; ++i) {
-        if(rubikscube[side_to_index(UP)].face[1][i] != W){
-            cross = 0;
-        }else{
-            cross = 1;
-        }
-    }
-   while(cross == 0){
-       display_rubiks(rubikscube);
-       if (rubikscube[side_to_index(UP)].face[0][1] != W && rubikscube[side_to_index(UP)].face[2][1] != W){
-           cross = 0;
-       }else{
-           cross = 1;
-       }
-       for (int i = 0; i < 3; ++i) {
-           if(rubikscube[side_to_index(UP)].face[1][i] != W){
-               cross = 0;
-           }else{
-               cross = 1;
-           }
-       }
-       if(cross == 0){
-           if(rubikscube[side_to_index(UP)].face[0][1] == W && rubikscube[side_to_index(UP)].face[1][0] == W
-              && rubikscube[side_to_index(UP)].face[1][1] == W && rubikscube[side_to_index(UP)].face[1][2] == W
-              && rubikscube[side_to_index(UP)].face[2][1] == G && rubikscube[side_to_index(FRONT)].face[0][1] == W
-              && rubikscube[side_to_index(LEFT)].face[0][1] == R && rubikscube[side_to_index(UP)].face[1][1] == R){
-               front_clockwise(rubikscube,1);
-               up_anticlockwise(rubikscube,1);
-               right_clockwise(rubikscube,1);
-               up_clockwise(rubikscube,1);
-           }else if (rubikscube[side_to_index(UP)].face[0][1] == W && rubikscube[side_to_index(UP)].face[1][0] == W
-                     && rubikscube[side_to_index(UP)].face[1][1] == W && rubikscube[side_to_index(UP)].face[1][2] == W
-                     && rubikscube[side_to_index(LEFT)].face[0][1] == R && rubikscube[side_to_index(UP)].face[1][1] == R
-                     && rubikscube[side_to_index(FRONT)].face[2][1] == W){
-               front_anticlockwise(rubikscube,1);
-               right_anticlockwise(rubikscube,1);
-               down_anticlockwise(rubikscube,1);
-               right_clockwise(rubikscube,1);
-               front_anticlockwise(rubikscube,2);
-           }else if(rubikscube[side_to_index(UP)].face[0][1] == W && rubikscube[side_to_index(UP)].face[1][0] == W
-                    && rubikscube[side_to_index(UP)].face[1][1] == W && rubikscube[side_to_index(UP)].face[1][2] == W
-                    && rubikscube[side_to_index(LEFT)].face[0][1] == R && rubikscube[side_to_index(UP)].face[1][1] == R
-                    && rubikscube[side_to_index(FRONT)].face[1][2] == W){
-               right_anticlockwise(rubikscube,1);
-               down_anticlockwise(rubikscube,1);
-               right_clockwise(rubikscube,1);
-               front_anticlockwise(rubikscube,2);
-           }else if(rubikscube[side_to_index(UP)].face[2][1] == R && rubikscube[side_to_index(FRONT)].face[0][1] == W){
-               front_clockwise(rubikscube,1);
-               right_clockwise(rubikscube,1);
-           }else if(rubikscube[side_to_index(UP)].face[1][2] == O && rubikscube[side_to_index(RIGHT)].face[0][1] == W){
-               right_anticlockwise(rubikscube,1);
-               front_anticlockwise(rubikscube,1);
-               up_clockwise(rubikscube,1);
-           }else{
-               printf("Le programme n'a pas trouvé d'algorithmes adéquats veuillez effectuer un mouvement manuel");
-               move_rubiks(rubikscube);
-           }
-       }
-   }
-
-}*/
-
 void make_cross(RUBIKS_SIDE* rubikscube){
-    daisy(rubikscube);
+    //Fonction réalisant une croix jaune sur la face down
+    semi_cross(rubikscube);
     display_rubiks(rubikscube);
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -1591,10 +1529,12 @@ void make_cross(RUBIKS_SIDE* rubikscube){
         front_clockwise(rubikscube, 2);
         quarter_horizontal_rotation(rubikscube);
     }
+    display_rubiks(rubikscube);
 
 }
 
-void daisy(RUBIKS_SIDE* rubikscube){
+void semi_cross(RUBIKS_SIDE* rubikscube){
+    //Réalise une croix sur la face up de la couleur de la face down
     int check = 0;
     for (int i = 0; i < 8; i++) {
         if((rubikscube[side_to_index(FRONT)].face[0][1] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[1][0] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[2][1] == rubikscube[side_to_index(DOWN)].face[1][1])){
@@ -1630,7 +1570,6 @@ void daisy(RUBIKS_SIDE* rubikscube){
             check = 1;
         }
         while(check == 1){
-            printf("4\n");
             if((rubikscube[side_to_index(DOWN)].face[0][1] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(DOWN)].face[1][0] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(DOWN)].face[1][2] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(DOWN)].face[2][1] != rubikscube[side_to_index(DOWN)].face[1][1])){
                 check = 0;
             }
@@ -1651,6 +1590,7 @@ void daisy(RUBIKS_SIDE* rubikscube){
 }
 
 void menu(RUBIKS_SIDE* rubikscube){
+    //Affichage du Menu
     int menu = 1;
     while (menu){
         for (int i = 0; i < 86; ++i) {

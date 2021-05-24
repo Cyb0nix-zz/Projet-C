@@ -46,7 +46,7 @@ void move_rubiks(RUBIKS_SIDE* rubikscube);
 void solve_rubiks(RUBIKS_SIDE* rubikscube);
 void make_cross(RUBIKS_SIDE* rubikscube);
 void corner(RUBIKS_SIDE* rubikscube);
-void daisy(RUBIKS_SIDE* rubikscube);
+void semi_cross(RUBIKS_SIDE* rubikscube);
 
 void menu();
 
