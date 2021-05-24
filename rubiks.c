@@ -163,7 +163,7 @@ void blank_rubiks(RUBIKS_SIDE* rubikscube){
         }
     }
 }
-/* */
+
 void fill_rubiks(RUBIKS_SIDE* rubikscube){
     /*
      * est la fonction qui vous permet de remplir un rubik’s cube,
