@@ -1,5 +1,4 @@
 #include "rubiks.h"
-#include <stdio.h>
 
 int main(){
     RUBIKS_SIDE * rubikscube;
@@ -7,5 +6,7 @@ int main(){
     init_rubiks(rubikscube);
     display_rubiks(rubikscube);
     menu(rubikscube);
+
+
     return 0;
 }

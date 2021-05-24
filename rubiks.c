@@ -4,6 +4,12 @@
 #include <time.h>
 
 char select_color(T_COLOR color){
+    /*
+     * Fonction prenant en paramètre un T_COLOR, retournant le char correspondant et en changant la couleur de
+     * la console en fonction d'une T_COLOR donné argument.
+     * param color T_COLOR
+     * return char
+     */
     HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
     switch (color) {
         case R:
@@ -33,6 +39,11 @@ char select_color(T_COLOR color){
 }
 
 int side_to_index(T_SIDE side){
+    /*
+     * Fonction retournant l'index correspondant à la Face donné en paramètre
+     * param side T_SIDE
+     * return int index de la face
+     */
 
     switch (side) {
 
@@ -54,7 +65,11 @@ int side_to_index(T_SIDE side){
 }
 
 RUBIKS_SIDE* create_rubiks(){
-
+    /*
+     * Alloue la mémoire pour le rubikscube et définie le type de chaque face
+     *
+     * return RUBIKS_SIDE pointer
+     */
     RUBIKS_SIDE* rubikscube = (RUBIKS_SIDE*) malloc(sizeof(RUBIKS_SIDE)*6);
     rubikscube[0].type_face = LEFT;
     rubikscube[1].type_face = UP;
@@ -66,11 +81,15 @@ RUBIKS_SIDE* create_rubiks(){
     return rubikscube;
 }
 
-
-
 void init_rubiks(RUBIKS_SIDE* rubikscube){
+    /*
+     * Fonction Initialisant le rubiks cube en le remplissant chaque face avec la couleur adéquate
+     * param rubikscube pointer RUBIKS_SIDE
+     */
+
     T_COLOR val;
     for (int i = 0; i < 6; ++i) {
+        // Définie la valeur avec laquel va être remplki la face en fonction du type de face
         switch (rubikscube[i].type_face) {
             case LEFT:
                 val = O;
@@ -94,6 +113,7 @@ void init_rubiks(RUBIKS_SIDE* rubikscube){
                 break;
 
         }
+        // rempli chaque face avec la valeur définie plutôt
         for (int j = 0; j < 3; ++j) {
             for (int k = 0; k < 3; ++k) {
                 rubikscube[i].face[j][k] = val;
@@ -103,14 +123,22 @@ void init_rubiks(RUBIKS_SIDE* rubikscube){
 }
 
 void display_rubiks(RUBIKS_SIDE * rubikscube){
+    /*
+     * Fonction affichant sous la forme d'un patron le rubiks cube
+     * param rubikscube pointer RUBIKS_SIDE
+     */
     HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-    T_COLOR display[9][12];
+    T_COLOR display[9][12]; //Création d'un tableau 2D vide affin de stocker le patron à afficher
     T_SIDE face;
+
+    // Initialisation du tableau avec des espace affin de combler les cases que le patron n'occupera pas
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 12; ++j) {
             display[i][j] = ' ';
         }
     }
+
+    // stockage des faces UP et DOWN dans les emplacements correspondant du tableau 2D conteant le patrons
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             display[i][3+j] = rubikscube[side_to_index(UP)].face[i][j];
@@ -120,6 +148,8 @@ void display_rubiks(RUBIKS_SIDE * rubikscube){
             display[6+i][3+j] = rubikscube[side_to_index(DOWN)].face[i][j];
         }
     }
+
+    // stockage du reste des faces dans les emplacements correspondant du tableau 2D conteant le patrons
     for (int i = 0; i < 4; ++i) {
         switch (i) {
             case 0:
@@ -143,6 +173,8 @@ void display_rubiks(RUBIKS_SIDE * rubikscube){
             }
         }
     }
+
+    //Affichage du tableau contenant le patron du rubiks cube
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 12; ++j) {
             printf(" %c ",select_color(display[i][j]));
@@ -155,6 +187,10 @@ void display_rubiks(RUBIKS_SIDE * rubikscube){
 }
 
 void blank_rubiks(RUBIKS_SIDE* rubikscube){
+    /*
+     * Fonction vidant les case du rubiks et les remplacants par une case grise
+     * param rubikscube pointer RUBIKS_SIDE
+     */
     for (int i = 0; i < 6; ++i) {
         for (int j = 0; j < 3; ++j) {
             for (int k = 0; k < 3; ++k) {
@@ -786,10 +822,17 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
 }
 
 void scramble_rubiks(RUBIKS_SIDE* rubikscube){
-        srand(time(NULL));
-        int loop = rand();
+    /*
+     * Fonction effectuant des mouvements aléatoires sur le rubiks cube afin de le mélanger
+     * param rubikscube pointer RUBIKS_SIDE
+     */
+    srand(time(NULL)); //Choisi alétoirement un nombre de mouvement allant être effectué
+    int loop = rand();
 
+    //Effectue un nombre d'action choisi aléatoirement
     for (int i = 0; i < loop; ++i) {
+
+        // choisie un nombre aléatoire afin de choisir une action a effectuer de manière aléatoire
 
         int move = rand();
         do {
@@ -837,10 +880,12 @@ void scramble_rubiks(RUBIKS_SIDE* rubikscube){
 }
 
 void free_rubiks(RUBIKS_SIDE* rubikscube){
+    //Libère la mémoire alloué au rubiks
     free(rubikscube);
 }
 
 void front_clockwise(RUBIKS_SIDE* rubikscube, int type){
+    //Effectue une rotation de la face front dans le sens horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(LEFT)].face[i][2];
@@ -850,6 +895,18 @@ void front_clockwise(RUBIKS_SIDE* rubikscube, int type){
         rubikscube[side_to_index(UP)].face[2][2-i] = tmp;
     }
 
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(FRONT)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(FRONT)].face[j][2-i] = tmp_face[i][j];
+        }
+    }
+
     if (type == 2){
         type = 1;
         front_clockwise(rubikscube,type);
@@ -857,6 +914,7 @@ void front_clockwise(RUBIKS_SIDE* rubikscube, int type){
 }
 
 void back_clockwise(RUBIKS_SIDE* rubikscube,int type){
+    // Effectue une rotation de la face back dans le sens anti horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(LEFT)].face[2-i][0];
@@ -864,6 +922,17 @@ void back_clockwise(RUBIKS_SIDE* rubikscube,int type){
         rubikscube[side_to_index(UP)].face[0][i]= rubikscube[side_to_index(RIGHT)].face[i][2];
         rubikscube[side_to_index(RIGHT)].face[i][2] = rubikscube[side_to_index(DOWN)].face[2][2-i];
         rubikscube[side_to_index(DOWN)].face[2][2-i] = tmp;
+    }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(BACK)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(BACK)].face[j][2-i] = tmp_face[i][j];
+        }
     }
     if (type == 2){
         type = 1;
@@ -873,6 +942,7 @@ void back_clockwise(RUBIKS_SIDE* rubikscube,int type){
 }
 
 void right_clockwise(RUBIKS_SIDE* rubikscube,int type){
+    //Effectue une rotation de la face right dans le sens horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(FRONT)].face[i][2];
@@ -881,6 +951,17 @@ void right_clockwise(RUBIKS_SIDE* rubikscube,int type){
         rubikscube[side_to_index(BACK)].face[2-i][0] = rubikscube[side_to_index(UP)].face[i][2];
         rubikscube[side_to_index(UP)].face[i][2] = tmp;
     }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(RIGHT)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(RIGHT)].face[j][2-i] = tmp_face[i][j];
+        }
+    }
     if (type == 2){
         type = 1;
         right_clockwise(rubikscube,type);
@@ -888,6 +969,7 @@ void right_clockwise(RUBIKS_SIDE* rubikscube,int type){
 }
 
 void left_clockwise(RUBIKS_SIDE* rubikscube,int type){
+    //Effectue une rotation de la face left dans le sens horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[i][2];
@@ -896,6 +978,17 @@ void left_clockwise(RUBIKS_SIDE* rubikscube,int type){
         rubikscube[side_to_index(FRONT)].face[2-i][0] = rubikscube[side_to_index(UP)].face[2-i][0];
         rubikscube[side_to_index(UP)].face[2-i][0] = tmp;
     }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(LEFT)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(LEFT)].face[j][2-i] = tmp_face[i][j];
+        }
+    }
     if (type == 2){
         type = 1;
         left_clockwise(rubikscube,type);
@@ -903,13 +996,25 @@ void left_clockwise(RUBIKS_SIDE* rubikscube,int type){
 }
 
 void up_clockwise(RUBIKS_SIDE* rubikscube, int type){
+    //Effectue une rotation de la face up dans le sens horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[0][i];
-        rubikscube[side_to_index(BACK)].face[0][i] = rubikscube[side_to_index(DOWN)].face[0][i];
-        rubikscube[side_to_index(DOWN)].face[0][i]= rubikscube[side_to_index(FRONT)].face[0][i];
-        rubikscube[side_to_index(FRONT)].face[0][i] = rubikscube[side_to_index(UP)].face[0][i];
-        rubikscube[side_to_index(UP)].face[0][i] = tmp;
+        rubikscube[side_to_index(BACK)].face[0][i] = rubikscube[side_to_index(LEFT)].face[0][i];
+        rubikscube[side_to_index(LEFT)].face[0][i]= rubikscube[side_to_index(FRONT)].face[0][i];
+        rubikscube[side_to_index(FRONT)].face[0][i] = rubikscube[side_to_index(RIGHT)].face[0][i];
+        rubikscube[side_to_index(RIGHT)].face[0][i] = tmp;
+    }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(UP)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(UP)].face[j][2-i] = tmp_face[i][j];
+        }
     }
     if (type == 2){
         type = 1;
@@ -918,13 +1023,25 @@ void up_clockwise(RUBIKS_SIDE* rubikscube, int type){
 }
 
 void down_clockwise(RUBIKS_SIDE* rubikscube, int type){
+    //Effectue une rotation de la face Down dans le sens horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[2][2-i];
-        rubikscube[side_to_index(BACK)].face[2][2-i] = rubikscube[side_to_index(DOWN)].face[2][2-i];
-        rubikscube[side_to_index(DOWN)].face[2][2-i]= rubikscube[side_to_index(FRONT)].face[2][2-i];
-        rubikscube[side_to_index(FRONT)].face[2][2-i] = rubikscube[side_to_index(UP)].face[2][2-i];
-        rubikscube[side_to_index(UP)].face[2][2-i] = tmp;
+        rubikscube[side_to_index(BACK)].face[2][2-i] = rubikscube[side_to_index(RIGHT)].face[2][2-i];
+        rubikscube[side_to_index(RIGHT)].face[2][2-i]= rubikscube[side_to_index(FRONT)].face[2][2-i];
+        rubikscube[side_to_index(FRONT)].face[2][2-i] = rubikscube[side_to_index(LEFT)].face[2][2-i];
+        rubikscube[side_to_index(LEFT)].face[2][2-i] = tmp;
+    }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(DOWN)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(DOWN)].face[j][2-i] = tmp_face[i][j];
+        }
     }
     if (type == 2){
         type = 1;
@@ -934,15 +1051,27 @@ void down_clockwise(RUBIKS_SIDE* rubikscube, int type){
 
 
 void front_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
+    //Effectue une rotation de la face Front dans le sens anti-horaire
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
-        tmp = rubikscube[side_to_index(LEFT)].face[2-i][2];
-        rubikscube[side_to_index(LEFT)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[0][2-i];
-        rubikscube[side_to_index(DOWN)].face[0][2-i]= rubikscube[side_to_index(RIGHT)].face[i][0];
-        rubikscube[side_to_index(RIGHT)].face[i][0] = rubikscube[side_to_index(UP)].face[2][i];
-        rubikscube[side_to_index(UP)].face[2][i] = tmp;
+        tmp = rubikscube[side_to_index(RIGHT)].face[2-i][0];
+        rubikscube[side_to_index(RIGHT)].face[2-i][0] = rubikscube[side_to_index(DOWN)].face[0][i];
+        rubikscube[side_to_index(DOWN)].face[0][i]= rubikscube[side_to_index(LEFT)].face[i][2];
+        rubikscube[side_to_index(LEFT)].face[i][2] = rubikscube[side_to_index(UP)].face[2][2-i];
+        rubikscube[side_to_index(UP)].face[2][2-i] = tmp;
     }
 
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(FRONT)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(FRONT)].face[i][j] = tmp_face[j][2-i];
+        }
+    }
     if (type == 2){
         type = 1;
         front_anticlockwise(rubikscube,type);
@@ -953,10 +1082,22 @@ void back_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(LEFT)].face[i][0];
-        rubikscube[side_to_index(LEFT)].face[i][0] = rubikscube[side_to_index(UP)].face[0][2-i];
-        rubikscube[side_to_index(UP)].face[0][2-i]= rubikscube[side_to_index(RIGHT)].face[2-i][2];
-        rubikscube[side_to_index(RIGHT)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[2][i];
-        rubikscube[side_to_index(DOWN)].face[2][i] = tmp;
+        rubikscube[side_to_index(LEFT)].face[i][0] = rubikscube[side_to_index(DOWN)].face[2][i];
+        rubikscube[side_to_index(DOWN)].face[2][i]= rubikscube[side_to_index(RIGHT)].face[2-i][2];
+        rubikscube[side_to_index(RIGHT)].face[2-i][2] = rubikscube[side_to_index(UP)].face[0][2-i];
+        rubikscube[side_to_index(UP)].face[0][2-i] = tmp;
+    }
+
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(BACK)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(BACK)].face[i][j] = tmp_face[j][2-i];
+        }
     }
     if (type == 2){
         type = 1;
@@ -969,10 +1110,21 @@ void left_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[2-i][2];
-        rubikscube[side_to_index(BACK)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[i][0];
-        rubikscube[side_to_index(DOWN)].face[i][0]= rubikscube[side_to_index(FRONT)].face[i][0];
-        rubikscube[side_to_index(FRONT)].face[i][0] = rubikscube[side_to_index(UP)].face[i][0];
-        rubikscube[side_to_index(UP)].face[i][0] = tmp;
+        rubikscube[side_to_index(BACK)].face[2-i][2] = rubikscube[side_to_index(UP)].face[i][0];
+        rubikscube[side_to_index(UP)].face[i][0]= rubikscube[side_to_index(FRONT)].face[i][0];
+        rubikscube[side_to_index(FRONT)].face[i][0] = rubikscube[side_to_index(DOWN)].face[i][0];
+        rubikscube[side_to_index(DOWN)].face[i][0] = tmp;
+    }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(LEFT)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(LEFT)].face[i][j] = tmp_face[j][2-i];
+        }
     }
     if (type == 2){
         type = 1;
@@ -984,10 +1136,21 @@ void right_anticlockwise(RUBIKS_SIDE* rubikscube,int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(FRONT)].face[2-i][2];
-        rubikscube[side_to_index(FRONT)].face[2-i][2] = rubikscube[side_to_index(DOWN)].face[2-i][2];
-        rubikscube[side_to_index(DOWN)].face[2-i][2]= rubikscube[side_to_index(BACK)].face[i][0];
-        rubikscube[side_to_index(BACK)].face[i][0] = rubikscube[side_to_index(UP)].face[2-i][2];
-        rubikscube[side_to_index(UP)].face[2-i][2] = tmp;
+        rubikscube[side_to_index(FRONT)].face[2-i][2] = rubikscube[side_to_index(UP)].face[2-i][2];
+        rubikscube[side_to_index(UP)].face[2-i][2]= rubikscube[side_to_index(BACK)].face[i][0];
+        rubikscube[side_to_index(BACK)].face[i][0] = rubikscube[side_to_index(DOWN)].face[2-i][2];
+        rubikscube[side_to_index(DOWN)].face[2-i][2] = tmp;
+    }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(RIGHT)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(RIGHT)].face[i][j] = tmp_face[j][2-i];
+        }
     }
     if (type == 2){
         type = 1;
@@ -999,10 +1162,21 @@ void up_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[0][2-i];
-        rubikscube[side_to_index(BACK)].face[0][2-i] = rubikscube[side_to_index(DOWN)].face[0][2-i];
-        rubikscube[side_to_index(DOWN)].face[0][2-i]= rubikscube[side_to_index(FRONT)].face[0][2-i];
-        rubikscube[side_to_index(FRONT)].face[0][2-i] = rubikscube[side_to_index(UP)].face[0][2-i];
-        rubikscube[side_to_index(UP)].face[0][2-i] = tmp;
+        rubikscube[side_to_index(BACK)].face[0][2-i] = rubikscube[side_to_index(RIGHT)].face[0][2-i];
+        rubikscube[side_to_index(RIGHT)].face[0][2-i]= rubikscube[side_to_index(FRONT)].face[0][2-i];
+        rubikscube[side_to_index(FRONT)].face[0][2-i] = rubikscube[side_to_index(LEFT)].face[0][2-i];
+        rubikscube[side_to_index(LEFT)].face[0][2-i] = tmp;
+    }
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(UP)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(UP)].face[i][j] = tmp_face[j][2-i];
+        }
     }
     if (type == 2){
         type = 1;
@@ -1014,10 +1188,22 @@ void down_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
     T_COLOR tmp;
     for (int i = 0; i < 3; ++i) {
         tmp = rubikscube[side_to_index(BACK)].face[2][i];
-        rubikscube[side_to_index(BACK)].face[2][i] = rubikscube[side_to_index(DOWN)].face[2][i];
-        rubikscube[side_to_index(DOWN)].face[2][i]= rubikscube[side_to_index(FRONT)].face[2][i];
-        rubikscube[side_to_index(FRONT)].face[2][i] = rubikscube[side_to_index(UP)].face[2][i];
-        rubikscube[side_to_index(UP)].face[2][i] = tmp;
+        rubikscube[side_to_index(BACK)].face[2][i] = rubikscube[side_to_index(LEFT)].face[2][i];
+        rubikscube[side_to_index(LEFT)].face[2][i]= rubikscube[side_to_index(FRONT)].face[2][i];
+        rubikscube[side_to_index(FRONT)].face[2][i] = rubikscube[side_to_index(RIGHT)].face[2][i];
+        rubikscube[side_to_index(RIGHT)].face[2][i] = tmp;
+    }
+
+    T_COLOR tmp_face[3][3];
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            tmp_face[i][j] = rubikscube[side_to_index(DOWN)].face[i][j];
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            rubikscube[side_to_index(DOWN)].face[i][j] = tmp_face[j][2-i];
+        }
     }
     if (type == 2){
         type = 1;
@@ -1026,18 +1212,36 @@ void down_anticlockwise(RUBIKS_SIDE* rubikscube, int type){
 }
 
 void vertical_rotation(RUBIKS_SIDE* rubikscube){
+    right_clockwise(rubikscube, 2);
+    left_anticlockwise(rubikscube,2);
     T_COLOR tmp;
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            tmp = rubikscube[side_to_index(FRONT)].face[i][j];
-            rubikscube[side_to_index(FRONT)].face[i][j] = rubikscube[side_to_index(BACK)].face[i][j];
-            rubikscube[side_to_index(BACK)].face[i][j] = tmp;
-            tmp = rubikscube[side_to_index(UP)].face[i][j];
-            rubikscube[side_to_index(UP)].face[i][j] = rubikscube[side_to_index(DOWN)].face[i][j];
-            rubikscube[side_to_index(DOWN)].face[i][j] = tmp;
+    for (int j = 0; j < 2; ++j) {
+        for (int i = 0; i < 3; ++i) {
+            tmp = rubikscube[side_to_index(BACK)].face[2-i][1];
+            rubikscube[side_to_index(BACK)].face[2-i][1] = rubikscube[side_to_index(UP)].face[i][1];
+            rubikscube[side_to_index(UP)].face[i][1] = rubikscube[side_to_index(FRONT)].face[i][1];
+            rubikscube[side_to_index(FRONT)].face[i][1] = rubikscube[side_to_index(DOWN)].face[i][1];
+            rubikscube[side_to_index(DOWN)].face[i][1] = tmp;
+
         }
     }
 }
+
+void quarter_vertical_rotation(RUBIKS_SIDE* rubikscube){
+    left_anticlockwise(rubikscube,1);
+    right_clockwise(rubikscube,1);
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[2-i][1];
+        rubikscube[side_to_index(BACK)].face[2-i][1] = rubikscube[side_to_index(UP)].face[i][1];
+        rubikscube[side_to_index(UP)].face[i][1] = rubikscube[side_to_index(FRONT)].face[i][1];
+        rubikscube[side_to_index(FRONT)].face[i][1] = rubikscube[side_to_index(DOWN)].face[i][1];
+        rubikscube[side_to_index(DOWN)].face[i][1] = tmp;
+
+    }
+
+}
+
 
 void horizontal_rotation(RUBIKS_SIDE* rubikscube){
     T_COLOR tmp;
@@ -1050,6 +1254,19 @@ void horizontal_rotation(RUBIKS_SIDE* rubikscube){
             rubikscube[side_to_index(LEFT)].face[i][j] = rubikscube[side_to_index(RIGHT)].face[i][j];
             rubikscube[side_to_index(RIGHT)].face[i][j] = tmp;
         }
+    }
+}
+
+void quarter_horizontal_rotation(RUBIKS_SIDE* rubikscube){
+    down_clockwise(rubikscube,1);
+    up_anticlockwise(rubikscube,1);
+    T_COLOR tmp;
+    for (int i = 0; i < 3; ++i) {
+        tmp = rubikscube[side_to_index(BACK)].face[1][2-i];
+        rubikscube[side_to_index(BACK)].face[1][2-i] = rubikscube[side_to_index(RIGHT)].face[1][2-i];
+        rubikscube[side_to_index(RIGHT)].face[1][2-i] = rubikscube[side_to_index(FRONT)].face[1][2-i];
+        rubikscube[side_to_index(FRONT)].face[1][2-i] = rubikscube[side_to_index(LEFT)].face[1][2-i];
+        rubikscube[side_to_index(LEFT)].face[1][2-i] = tmp;
     }
 }
 
@@ -1289,7 +1506,7 @@ void corner(RUBIKS_SIDE* rubikscube){
     
 }
 
-void make_cross(RUBIKS_SIDE* rubikscube){
+/*void make_cross(RUBIKS_SIDE* rubikscube){
    int cross = 1;
     if (rubikscube[side_to_index(UP)].face[0][1] != W && rubikscube[side_to_index(UP)].face[2][1] != W){
         cross = 0;
@@ -1351,53 +1568,86 @@ void make_cross(RUBIKS_SIDE* rubikscube){
                front_anticlockwise(rubikscube,1);
                up_clockwise(rubikscube,1);
            }else{
-               srand(time(NULL));
-               int move = rand();
-               do {
-                   move = move/10;
-               }while (move > 11);
-               switch (move) {
-                   case 0:
-                       front_clockwise(rubikscube,1);
-                       break;
-                   case 1:
-                       front_anticlockwise(rubikscube,1);
-                       break;
-                   case 2:
-                       back_clockwise(rubikscube,1);
-                       break;
-                   case 3:
-                       back_anticlockwise(rubikscube,1);
-                       break;
-                   case 4:
-                       left_clockwise(rubikscube,1);
-                       break;
-                   case 5:
-                       left_anticlockwise(rubikscube,1);
-                       break;
-                   case 6:
-                       right_clockwise(rubikscube,1);
-                       break;
-                   case 7:
-                       right_anticlockwise(rubikscube,1);
-                       break;
-                   case 8:
-                       up_clockwise(rubikscube,1);
-                       break;
-                   case 9:
-                       up_anticlockwise(rubikscube,1);
-                       break;
-                   case 10:
-                       down_clockwise(rubikscube,1);
-                       break;
-                   case 11:
-                       down_anticlockwise(rubikscube,1);
-                       break;
-               }
+               printf("Le programme n'a pas trouvé d'algorithmes adéquats veuillez effectuer un mouvement manuel");
+               move_rubiks(rubikscube);
            }
        }
    }
 
+}*/
+
+void make_cross(RUBIKS_SIDE* rubikscube){
+    daisy(rubikscube);
+    display_rubiks(rubikscube);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if((rubikscube[side_to_index(FRONT)].face[0][1] == rubikscube[side_to_index(FRONT)].face[1][1]) && (rubikscube[side_to_index(UP)].face[2][1] == rubikscube[side_to_index(DOWN)].face[1][1])){
+                break;
+            }
+            else{
+                up_clockwise(rubikscube, 1);
+            }
+        }
+        front_clockwise(rubikscube, 2);
+        quarter_horizontal_rotation(rubikscube);
+    }
+
+}
+
+void daisy(RUBIKS_SIDE* rubikscube){
+    int check = 0;
+    for (int i = 0; i < 8; i++) {
+        if((rubikscube[side_to_index(FRONT)].face[0][1] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[1][0] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[2][1] == rubikscube[side_to_index(DOWN)].face[1][1])){
+            check = 1;
+        }
+        while (check == 1) {
+            if((rubikscube[side_to_index(FRONT)].face[0][1] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[1][0] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(FRONT)].face[2][1] == rubikscube[side_to_index(DOWN)].face[1][1])){
+                check = 1;
+            }
+            while(check == 1){
+
+                if((rubikscube[side_to_index(FRONT)].face[0][1] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(FRONT)].face[1][0] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(FRONT)].face[1][2] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(FRONT)].face[2][1] != rubikscube[side_to_index(DOWN)].face[1][1])){
+                    check = 0;
+                }
+                if(rubikscube[side_to_index(FRONT)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]){
+                    if(rubikscube[side_to_index(UP)].face[1][2] != rubikscube[side_to_index(DOWN)].face[1][1]){
+                        right_clockwise(rubikscube,1);
+                    }
+                    else{
+                        while(rubikscube[side_to_index(UP)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]){
+                            up_clockwise(rubikscube,1);
+                        }
+                        right_clockwise(rubikscube,1);
+                    }
+                }
+                front_clockwise(rubikscube,1);
+            }
+        }
+        quarter_horizontal_rotation(rubikscube);
+    }
+    for (int k = 0; k < 8; k++) {
+        if((rubikscube[side_to_index(DOWN)].face[0][1] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(DOWN)].face[1][0] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(DOWN)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]) || (rubikscube[side_to_index(DOWN)].face[2][1] == rubikscube[side_to_index(DOWN)].face[1][1])){
+            check = 1;
+        }
+        while(check == 1){
+            printf("4\n");
+            if((rubikscube[side_to_index(DOWN)].face[0][1] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(DOWN)].face[1][0] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(DOWN)].face[1][2] != rubikscube[side_to_index(DOWN)].face[1][1]) && (rubikscube[side_to_index(DOWN)].face[2][1] != rubikscube[side_to_index(DOWN)].face[1][1])){
+                check = 0;
+            }
+            if(rubikscube[side_to_index(DOWN)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]){
+                if(rubikscube[side_to_index(UP)].face[1][2] != rubikscube[side_to_index(DOWN)].face[1][1]){
+                    right_clockwise(rubikscube,2);
+                }
+                else{
+                    while(rubikscube[side_to_index(UP)].face[1][2] == rubikscube[side_to_index(DOWN)].face[1][1]){
+                        up_clockwise(rubikscube,1);
+                    }
+                    right_clockwise(rubikscube,2);
+                }
+            }
+            down_clockwise(rubikscube,1);
+        }
+    }
 }
 
 void menu(RUBIKS_SIDE* rubikscube){

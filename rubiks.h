@@ -37,13 +37,16 @@ void right_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
 void left_anticlockwise(RUBIKS_SIDE* rubiscube,int type);
 
 void horizontal_rotation(RUBIKS_SIDE* rubiscube);
+void quarter_horizontal_rotation(RUBIKS_SIDE* rubikscube);
 void vertical_rotation(RUBIKS_SIDE* rubiscube);
+void quarter_vertical_rotation(RUBIKS_SIDE* rubikscube);
 
 void move_rubiks(RUBIKS_SIDE* rubikscube);
 
 void solve_rubiks(RUBIKS_SIDE* rubikscube);
 void make_cross(RUBIKS_SIDE* rubikscube);
 void corner(RUBIKS_SIDE* rubikscube);
+void daisy(RUBIKS_SIDE* rubikscube);
 
 void menu();
 
