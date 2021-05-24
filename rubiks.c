@@ -1332,6 +1332,4 @@ void menu(RUBIKS_SIDE* rubikscube){
                 break;
         }
     }
-
-
 }
