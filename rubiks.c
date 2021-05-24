@@ -182,17 +182,11 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
 
     // Boucle pour demander a l'utilisateur de remplir chaque case du tableau
     for(int cpt = 0; cpt < 54; ++cpt){
-        for (int i = 0; i < 35; ++i) {
-            printf("-");
-        }
-        printf("\n        Choisissez une face\n");
-        for (int i = 0; i < 35; ++i) {
-            printf("-");
-        }
-        printf(" \n");
         for (int i = 0; i < 76; ++i) {
             printf("-");
         }
+        printf("\n        Choisissez une face: \n");
+
         printf("\n");
         //Demande de choisir la face a modifier
         printf("0: Left    1: Front     2: Up    3: Down    4: Right     5: Back     6: Exit\n");
@@ -209,17 +203,11 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
         }
         printf("\n");
 
-        for (int i = 0; i < 47; ++i) {
-            printf("-");
-        }
-        printf("\n      Quelle case voulez vous modifier ?\n");
-        for (int i = 0; i < 47; ++i) {
-            printf("-");
-        }
-        printf("\n");
         for (int i = 0; i < 51; ++i) {
             printf("-");
         }
+        printf("\n        Quelle case voulez vous modifier ?\n");
+
         printf("\n");
         //Demande de choisir la ligne a modifier sur la face choisi
         printf("0: Ligne 1    1: Ligne 2     2: Ligne 3     3: Exit\n");
@@ -235,10 +223,6 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
             break;
         }
         printf("\n");
-        for (int i = 0; i < 57; ++i) {
-            printf("-");
-        }
-        printf("\n");
         //Demande la colonne a modifier sur la face et la ligne choisi
         printf("0: Colonne 1    1: Colonne 2     2: Colonne 3     3: Exit\n");
         for (int i = 0; i < 57; ++i) {
@@ -252,17 +236,11 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
             move = 0;
             break;
         }
-        for (int i = 0; i < 35; ++i) {
-            printf("-");
-        }
-        printf("\n     Choisissez votre couleur\n");
-        for (int i = 0; i < 35; ++i) {
-            printf("-");
-        }
-        printf("\n");
         for (int i = 0; i < 80; ++i) {
             printf("-");
         }
+        printf("\n     Choisissez votre couleur :\n");
+
         printf("\n");
         //Demande la couleur a modifier sur la case selectionner par les actions precedente
         printf("1: Rouge   2: Bleu     3: Vert     4: Blanc     5: Jaune     6: Rose     7: Exit \n");
