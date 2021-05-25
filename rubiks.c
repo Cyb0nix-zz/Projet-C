@@ -225,7 +225,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
 
         printf("\n");
         //Demande de choisir la face a modifier
-        printf("0: Left    1: Front     2: Up    3: Down    4: Right     5: Back     6: Exit\n");
+        printf("0: Left    1: Up     2: Front    3: Down    4: Right     5: Back     6: Exit\n");
         for (int i = 0; i < 76; ++i) {
             printf("-");
         }
@@ -345,7 +345,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                     cpt_angle_r += 1;
                                     cpt_r += 1;
-                                    break;
+
                                 }
 
                             }
@@ -358,7 +358,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                     if ((row == 1)&&(col == 1)) {
                             //Et si le compteur >= 1, ne place pas la couleur
                             if (cpt_centre_r >= 1){
-                                printf("Vous ne pouvez placer cette couleur ici2");
+                                printf("Vous ne pouvez placer cette couleur ici");
                                 break;
                             }
                             else {
@@ -371,6 +371,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                             }
                     }
                 }
+
                 //Si la case choisi a une case adjacente sur une autre face de la meme couleur alors, supprime la couleur de la case choisi et affiche le message d'alerte
                 if (((rubikscube[0].face[0][0] == R)&&(rubikscube[1].face[0][0] == R))||((rubikscube[0].face[0][1] == R)&&(rubikscube[1].face[1][0] == R))||((rubikscube[0].face[0][2] == R)&&(rubikscube[1].face[2][0] == R))||((rubikscube[5].face[0][2] == R)&&(rubikscube[1].face[0][0] == R))||((rubikscube[5].face[0][1] == R)&&(rubikscube[1].face[0][1] == R))||((rubikscube[5].face[0][0] == R)&&(rubikscube[1].face[0][2] == R))||((rubikscube[4].face[0][0] == R)&&(rubikscube[1].face[2][2] == R))||((rubikscube[4].face[0][1] == R)&&(rubikscube[1].face[1][2] == R))||((rubikscube[4].face[0][2] == R)&&(rubikscube[1].face[0][2] == R))||((rubikscube[2].face[0][0] == R)&&(rubikscube[1].face[2][0] == R))||((rubikscube[2].face[0][1] == R)&&(rubikscube[1].face[2][1] == R))||((rubikscube[2].face[0][2] == R)&&(rubikscube[1].face[2][2] == R))||((rubikscube[2].face[0][0] == R)&&(rubikscube[0].face[0][2] == R))||((rubikscube[2].face[1][0] == R)&&(rubikscube[0].face[1][2] == R))||((rubikscube[2].face[2][0] == R)&&(rubikscube[0].face[2][2] == R))||((rubikscube[2].face[2][0] == R)&&(rubikscube[3].face[0][0] == R))||((rubikscube[2].face[2][1] == R)&&(rubikscube[3].face[0][1] == R))||((rubikscube[2].face[2][2] == R)&&(rubikscube[3].face[0][2] == R))||((rubikscube[2].face[0][2] == R)&&(rubikscube[4].face[0][0] == R))||((rubikscube[2].face[1][2] == R)&&(rubikscube[4].face[1][0] == R))||((rubikscube[2].face[2][2] == R)&&(rubikscube[4].face[2][0] == R))||((rubikscube[3].face[0][0] == R)&&(rubikscube[0].face[2][2] == R))||((rubikscube[3].face[1][0] == R)&&(rubikscube[0].face[2][1] == R))||((rubikscube[3].face[2][0] == R)&&(rubikscube[0].face[2][0] == R))||((rubikscube[3].face[0][2] == R)&&(rubikscube[4].face[2][0] == R))||((rubikscube[3].face[1][2] == R)&&(rubikscube[4].face[1][0] == R))||((rubikscube[3].face[2][2] == R)&&(rubikscube[4].face[2][0] == R))||((rubikscube[3].face[2][0] == R)&&(rubikscube[5].face[2][2] == R))||((rubikscube[3].face[2][1] == R)&&(rubikscube[5].face[2][1] == R))||((rubikscube[3].face[2][2] == R)&&(rubikscube[5].face[2][0] == R))||((rubikscube[5].face[0][0] == R)&&(rubikscube[4].face[0][2] == R))||((rubikscube[5].face[1][0] == R)&&(rubikscube[4].face[1][2] == R))||((rubikscube[5].face[2][0] == R)&&(rubikscube[4].face[2][2] == R))||((rubikscube[5].face[0][2] == R)&&(rubikscube[0].face[0][0] == R))||((rubikscube[5].face[1][2] == R)&&(rubikscube[0].face[1][0] == R))||((rubikscube[5].face[2][2] == R)&&(rubikscube[0].face[2][0] == R))){
                     rubikscube[face].face[row][col] = LG;
@@ -406,7 +407,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_b += 1;
                         cpt_b += 1;
-                        break;
+
 
                     }
                 }
@@ -432,7 +433,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                     cpt_angle_b += 1;
                                     cpt_b += 1;
-                                    break;
+
                                 }
 
                             }
@@ -492,7 +493,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_g += 1;
                         cpt_g += 1;
-                        break;
+
 
                     }
                 }
@@ -518,7 +519,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                     cpt_angle_g += 1;
                                     cpt_g += 1;
-                                    break;
+
                                 }
 
                             }
@@ -579,7 +580,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_w += 1;
                         cpt_w += 1;
-                        break;
+
 
                     }
                 }
@@ -605,7 +606,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                     cpt_angle_w += 1;
                                     cpt_w += 1;
-                                    break;
+
                                 }
 
                             }
@@ -666,7 +667,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_y += 1;
                         cpt_y += 1;
-                        break;
+
 
                     }
                 }
@@ -692,7 +693,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                     cpt_angle_y += 1;
                                     cpt_y += 1;
-                                    break;
+
                                 }
 
                             }
@@ -753,7 +754,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                         //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                         cpt_pole_o += 1;
                         cpt_o += 1;
-                        break;
+
 
                     }
                 }
@@ -779,7 +780,7 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
                                     //Ajoute 1 aux compteurs si les conditions au dessus ne sont pas effectuer
                                     cpt_angle_o += 1;
                                     cpt_o += 1;
-                                    break;
+
                                 }
 
                             }
