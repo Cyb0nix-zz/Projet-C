@@ -215,7 +215,8 @@ void fill_rubiks(RUBIKS_SIDE* rubikscube){
     int cpt_angle_r = 0, cpt_angle_b = 0, cpt_angle_g = 0, cpt_angle_w = 0, cpt_angle_y = 0, cpt_angle_o = 0;
     int cpt_pole_r = 0, cpt_pole_b = 0, cpt_pole_g = 0, cpt_pole_w = 0, cpt_pole_y = 0, cpt_pole_o = 0;
     int val;
-
+    //Vide le rubiks cube(enleve les couleurs du cube)
+    blank_rubiks(rubikscube);
     // Boucle pour demander a l'utilisateur de remplir chaque case du tableau
     for(int cpt = 0; cpt < 54; ++cpt){
         for (int i = 0; i < 76; ++i) {
